@@ -12,13 +12,14 @@
       <el-row class="search-wrapper" :gutter="10">
         <el-col :lg="8" :md="12" :sm="12" :xs="24">
           <el-input
+            v-focus
             icon="search"
             type="text"
             placeholder="請輸入關鍵字"
             v-model="query"
             @keypress="fetchNews"
           ></el-input>
-          <el-button type="primary" size="small" icon="search">查詢</el-button>
+          <el-button type="primary" size="small" icon="search" @click="submitInput()">查詢</el-button>
         </el-col>
 
         <div class="block">
@@ -101,7 +102,7 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const isLoad = ref(false)
-    const apikey = ref('e2115558fd8c4a31814264040c8b3166')
+    const apikey = ref('ee91784129d14f3aa19dd854211221a3')
     const url = ref('https://newsapi.org/v2/')
     const query = ref('')
     const date = reactive({
@@ -134,14 +135,12 @@ export default defineComponent({
     watch(
       () => sort.data.value,
       (newValue) => {
-        isLoad.value = false
         axios
           .get(
-            `${url.value}everything?q=COVID-19&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
+            `${url.value}everything?q=${query.value}&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
           )
           .then((res) => {
             if (res.data.status) {
-              isLoad.value = true
               news.data = res.data.articles
               console.log(news)
             } else {
@@ -182,7 +181,6 @@ export default defineComponent({
     }
 
     const selectDate = () => {
-      // 筛选
       if (!date.data.startTime || !date.data.endTime) {
         ElMessage.warning({
           type: 'warning',
@@ -197,9 +195,36 @@ export default defineComponent({
           )
           .then((res) => {
             if (res.data.status) {
-              isLoad.value = true
               news.data = res.data.articles
-              console.log(news)
+              console.log(startTime)
+              console.log(endTime)
+            } else {
+              console.log(res.data.message)
+            }
+          })
+          .catch((error) => {
+            console.log(error.data.message)
+          })
+      }
+    }
+
+    const submitInput = () => {
+      if (!query.value) {
+        ElMessage.warning({
+          type: 'warning',
+          message: '請輸入關鍵字'
+        })
+      } else {
+        const startTime = convert(date.data.startTime)
+        const endTime = convert(date.data.endTime)
+        axios
+          .get(
+            `${url.value}everything?q=${query.value}&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+          )
+          .then((res) => {
+            if (res.data.status) {
+              news.data = res.data.articles
+              console.log(query.value)
             } else {
               console.log(res.data.message)
             }
@@ -232,7 +257,8 @@ export default defineComponent({
       fetchNews,
       readMore,
       disabledDate,
-      selectDate
+      selectDate,
+      submitInput
     }
   }
 })
