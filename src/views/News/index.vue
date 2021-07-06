@@ -95,7 +95,7 @@ import { defineComponent, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 import { onMounted } from '@vue/runtime-core'
 import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 export default defineComponent({
   name: 'News',
@@ -104,7 +104,7 @@ export default defineComponent({
     const isLoad = ref(false)
     const apikey = ref('ee91784129d14f3aa19dd854211221a3')
     const url = ref('https://newsapi.org/v2/')
-    const query = ref('')
+    const query = ref('COVID-19')
     const date = reactive({
       data: {
         startTime: '',
@@ -141,6 +141,14 @@ export default defineComponent({
           )
           .then((res) => {
             if (res.data.status) {
+              Swal.fire({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 1000,
+                icon: 'success',
+                title: '篩選成功'
+              })
               news.data = res.data.articles
               console.log(news)
             } else {
@@ -182,9 +190,13 @@ export default defineComponent({
 
     const selectDate = () => {
       if (!date.data.startTime || !date.data.endTime) {
-        ElMessage.warning({
-          type: 'warning',
-          message: '請選擇時間區間'
+        Swal.fire({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 2000,
+          icon: 'error',
+          title: '請選擇時間區間'
         })
       } else {
         const startTime = convert(date.data.startTime)
@@ -195,6 +207,14 @@ export default defineComponent({
           )
           .then((res) => {
             if (res.data.status) {
+              Swal.fire({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 1000,
+                icon: 'success',
+                title: '篩選成功'
+              })
               news.data = res.data.articles
               console.log(startTime)
               console.log(endTime)
@@ -210,9 +230,13 @@ export default defineComponent({
 
     const submitInput = () => {
       if (!query.value) {
-        ElMessage.warning({
-          type: 'warning',
-          message: '請輸入關鍵字'
+        Swal.fire({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 2000,
+          icon: 'error',
+          title: '請輸入關鍵字'
         })
       } else {
         const startTime = convert(date.data.startTime)
@@ -223,6 +247,14 @@ export default defineComponent({
           )
           .then((res) => {
             if (res.data.status) {
+              Swal.fire({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 1000,
+                icon: 'success',
+                title: '查詢成功'
+              })
               news.data = res.data.articles
               console.log(query.value)
             } else {
