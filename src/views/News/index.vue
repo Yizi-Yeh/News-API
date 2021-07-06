@@ -1,5 +1,7 @@
 <template>
-  <img v-show="!isLoad" class="load" src="@/assets/load.gif" alt="" />
+  <div class="load-box" v-show="!isLoad">
+    <img class="load" src="@/assets/load.gif" />
+  </div>
   <el-container v-show="isLoad">
     <el-header
       ><h1 class="title">News API</h1>
@@ -16,23 +18,40 @@
             v-model="query"
             @keypress="fetchNews"
           ></el-input>
+          <el-button type="primary" size="small" icon="search">查詢</el-button>
         </el-col>
 
         <div class="block">
           <el-date-picker
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="開始日期"
-            end-placeholder="結束日期"
-            :shortcuts="shortcuts"
+            v-model="date.data.startTime"
+            type="date"
+            :value-format="yyyy - MM - dd"
+            :disabled-date="disabledDate"
+            placeholder="選擇開始時間"
+            format="YYYY 年 MM 月 DD 日"
           >
           </el-date-picker>
+          --
+          <el-date-picker
+            v-model="date.data.endTime"
+            type="date"
+            :value-format="yyyy - MM - dd"
+            :disabled-date="disabledDate"
+            format="YYYY 年 MM 月 DD 日"
+            placeholder="選擇結束時間"
+          >
+          </el-date-picker>
+          <el-button
+            type="primary"
+            size="small"
+            icon="search"
+            @click="selectDate()"
+            >篩選</el-button
+          >
         </div>
 
         <el-col :lg="6" :md="6" :sm="6" :xs="24">
-          <el-select v-model="sort.data.value" placeholder="Sort by">
+          <el-select v-model="sort.data.value" placeholder="排序">
             <el-option
               v-for="item in sort.data"
               :key="item.value"
@@ -71,21 +90,33 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, toRefs, watch } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 import { onMounted } from '@vue/runtime-core'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'News',
   setup () {
     const router = useRouter()
     const isLoad = ref(false)
-    const apikey = ref('fb7bf8e352b7410a9f7cb203282ea1af')
+    const apikey = ref('e2115558fd8c4a31814264040c8b3166')
     const url = ref('https://newsapi.org/v2/')
+    const query = ref('')
+    const date = reactive({
+      data: {
+        startTime: '',
+        endTime: ''
+      }
+    })
 
     const sort = reactive({
       data: [
+        {
+          value: 'publishedAt',
+          label: '發布時間 publishedAt'
+        },
         {
           value: 'relevancy',
           label: '相關度 relevancy'
@@ -93,67 +124,35 @@ export default defineComponent({
         {
           value: 'popularity',
           label: '人氣 popularity'
-        },
-        {
-          value: 'publishedAt',
-          label: '發布時間 publishedAt'
         }
       ],
       value: ''
     })
-    const query = ref('COVID-19')
+
     const news = reactive({ data: {} })
 
-    const state = reactive({
-      shortcuts: [
-        {
-          text: '最近一週',
-          value: (() => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            return [start, end]
-          })()
-        },
-        {
-          text: '最近一個月',
-          value: (() => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            return [start, end]
-          })()
-        },
-        {
-          text: '最近三個月',
-          value: (() => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            return [start, end]
-          })()
-        }
-      ],
-      value2: ''
-    })
-
-    watch(() => sort.data.value, (newValue) => {
-      isLoad.value = false
-      axios
-        .get(
-          `${url.value}everything?q=${query.value}&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
-        ).then((res) => {
-          if (res.data.status) {
-            isLoad.value = true
-            news.data = res.data.articles
-            console.log(news)
-          } else {
-            console.log(res.data.message)
-          }
-        }).catch((error) => {
-          console.log(error.data.message)
-        })
-    })
+    watch(
+      () => sort.data.value,
+      (newValue) => {
+        isLoad.value = false
+        axios
+          .get(
+            `${url.value}everything?q=COVID-19&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
+          )
+          .then((res) => {
+            if (res.data.status) {
+              isLoad.value = true
+              news.data = res.data.articles
+              console.log(news)
+            } else {
+              console.log(res.data.message)
+            }
+          })
+          .catch((error) => {
+            console.log(error.data.message)
+          })
+      }
+    )
 
     onMounted(() => {
       fetchNews()
@@ -162,7 +161,7 @@ export default defineComponent({
     const fetchNews = () => {
       axios
         .get(
-          `${url.value}everything?q=${query.value}&from=2021-07-04&to=2021-07-06&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+          `${url.value}everything?q=COVID-19&from=2021-07-04&to=2021-07-06&sortBy=${sort.data.value}&apiKey=${apikey.value}`
         )
         .then((res) => {
           if (res.data.status) {
@@ -178,6 +177,46 @@ export default defineComponent({
         })
     }
 
+    const disabledDate = (time) => {
+      return time.getTime() > Date.now()
+    }
+
+    const selectDate = () => {
+      // 筛选
+      if (!date.data.startTime || !date.data.endTime) {
+        ElMessage.warning({
+          type: 'warning',
+          message: '請選擇時間區間'
+        })
+      } else {
+        const startTime = convert(date.data.startTime)
+        const endTime = convert(date.data.endTime)
+        axios
+          .get(
+            `${url.value}everything?q=COVID-19&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+          )
+          .then((res) => {
+            if (res.data.status) {
+              isLoad.value = true
+              news.data = res.data.articles
+              console.log(news)
+            } else {
+              console.log(res.data.message)
+            }
+          })
+          .catch((error) => {
+            console.log(error.data.message)
+          })
+      }
+    }
+
+    function convert (str) {
+      const date = new Date(str)
+      const mnth = ('0' + (date.getMonth() + 1)).slice(-2)
+      const day = ('0' + date.getDate()).slice(-2)
+      return [date.getFullYear(), mnth, day].join('-')
+    }
+
     const readMore = () => {
       router.push('/213')
     }
@@ -189,9 +228,11 @@ export default defineComponent({
       query,
       sort,
       news,
+      date,
       fetchNews,
       readMore,
-      ...toRefs(state)
+      disabledDate,
+      selectDate
     }
   }
 })
@@ -206,6 +247,13 @@ hr {
   max-width: 50px;
   border: solid 2px;
   margin: 0 auto;
+}
+.load-box {
+  margin-top: 250px;
+  .load {
+    height: 150px;
+    margin: auto 0;
+  }
 }
 
 .search-wrapper {
