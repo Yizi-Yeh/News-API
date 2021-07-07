@@ -1,51 +1,50 @@
 <template>
   <el-container v-if="currNews">
-    <el-header>
+    <el-header class="header">
       <el-page-header @back="goBack" content="News Detail"> </el-page-header>
     </el-header>
     <el-main>
-      <el-row>
-        <el-col>
-          <img :src="currNews.urlToImage" alt="" />
+      <el-row type="flex" class="row-bg" justify="center"
+        >
+        <el-col class="main-title">
+          <img :src="currNews.urlToImage" class="main-img" />
         </el-col>
       </el-row>
 
-      <el-row>
+      <el-row v-if="currNews.author" type="flex" class="row-bg" justify="center"
+        >
         <el-col>
-          <h1>{{ currNews.title }}</h1>
+          <h3>Author：{{ currNews.author }}</h3>
+        </el-col>
+      </el-row>
+
+      <el-row type="flex" class="row-bg" justify="center"
+        >
+        <el-col>
+          <h1>Title:</h1>
+          <hr>
+          <h2>{{ currNews.title }}</h2>
           <br />
         </el-col>
       </el-row>
 
-      <el-row>
-        <el-col>
-          <h2>{{ currNews.content }}</h2>
+      <el-row type="flex" class="row-bg" justify="center"
+        >
+        <el-col class="main-content">
+
+          <h3>{{ currNews.content }}</h3>
           <br />
         </el-col>
       </el-row>
 
-      <el-row>
-        <el-col>
-          <h1>author：{{ currNews.author }}</h1>
-          <br />
-        </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col>
-          <h4>publishedAt：{{ currNews.publishedAt }}</h4>
-          <br />
-        </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col>
-          <h4>source：{{ currNews.source.name }}</h4>
-          <br />
-        </el-col>
+      <el-row type="flex" class="row-bg" justify="space-around"
+        >
+        <el-col class="main-footer">
+          <h4>Source：{{ currNews.source.name }}</h4>
+          <h4>PublishedAt：{{ currNews.publishedAt }}</h4>
+          </el-col>
       </el-row>
     </el-main>
-    <el-footer><h4>Copyright 2021 all rights reserved</h4></el-footer>
   </el-container>
 </template>
 <script>
@@ -82,3 +81,44 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.header {
+  padding-top: 50px;
+  padding-left: 100px;
+  padding-bottom: 50px;
+  font-size: 1rem;
+}
+.main-content {
+  max-width: 640px;
+}
+.main-title {
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  .main-img {
+    max-width: 900px;
+    height: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+}
+.main-footer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  max-width: 900px;
+}
+hr {
+    max-width: 30px;
+    border: solid 2px;
+    margin: 0.5rem auto;
+  }
+</style>
