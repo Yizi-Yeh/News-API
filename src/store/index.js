@@ -52,10 +52,10 @@ export default createStore({
       state.news = payload
     },
     setPages (state, payload) {
-      state.page = payload
       console.log(payload)
     },
     setcurrNewsId (state, payload) {
+      console.log(payload)
       state.currNewsId = payload
     }
   },
@@ -103,7 +103,8 @@ export default createStore({
     },
     currNews (state) {
       const { news } = state
-      return news.filter((item) => item.publishedAt === state.setcurrNewsId)[0]
+      console.log(news)
+      return news.filter((item) => item.publishedAt === state.currNewsId)[0]
     }
 
   }

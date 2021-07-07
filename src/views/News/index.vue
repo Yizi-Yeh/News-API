@@ -120,7 +120,7 @@
 <script>
 import { defineComponent, computed, watch } from 'vue'
 import axios from 'axios'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 
@@ -128,7 +128,6 @@ export default defineComponent({
   name: 'News',
   setup () {
     const router = useRouter()
-    const route = useRoute()
     const store = useStore()
 
     const isLoad = computed({
@@ -300,20 +299,10 @@ export default defineComponent({
     }
 
     const readMore = (idx) => {
-      const startTime = convert(date.value.startTime)
-      const endTime = convert(date.value.endTime)
-      axios
-        .get(
-         `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=72458e60882e4d5581df3c440a732340`
-        )
-        .then((res) => {
-          if (res.data.status) {
-            const id = route.params.id
-            store.commit('setcurrNewsId', id)
-            store.commit('setNews', res.data.articles)
-            router.push(`/${idx}`)
-          }
-        })
+      const id = idx
+      console.log(id)
+      store.commit('setcurrNewsId', id)
+      router.push(`/${id}`)
     }
 
     return {
