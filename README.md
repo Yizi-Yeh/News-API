@@ -7,3 +7,11 @@
 
 ## 使用套件
   - SweetAlert2
+
+## 啟動方式
+
+### install dependency
+    npm install
+
+### develop
+    npm run serve
