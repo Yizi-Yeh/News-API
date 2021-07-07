@@ -1,12 +1,50 @@
 <template>
-  <el-container>
-    <el-header>Header</el-header>
+  <el-container v-if="currNews">
+    <el-header>
+      <el-page-header @back="goBack" content="新聞詳細內容"> </el-page-header>
+    </el-header>
     <el-main>
-      <el-row v-show="isLoad">
+      <el-row>
         <el-col>
-          <h2>{{ currNews.title }}</h2>
+          <img :src="currNews.urlToImage" alt="">
         </el-col>
       </el-row>
+
+      <el-row>
+        <el-col>
+          <h1>{{ currNews.title }}</h1>
+          <br>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col>
+          <h1>author：{{ currNews.author }}</h1>
+          <br>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col>
+          <h2>{{ currNews.content }}</h2>
+          <br>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col>
+          <h4>publishedAt：{{ currNews.publishedAt }}</h4>
+          <br>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col>
+          <h4>source：{{ currNews.source.name }}</h4>
+          <br>
+        </el-col>
+      </el-row>
+
     </el-main>
     <el-footer>Footer</el-footer>
   </el-container>
@@ -15,12 +53,13 @@
 import { reactive, ref, computed } from 'vue'
 import axios from 'axios'
 import { onMounted } from '@vue/runtime-core'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: 'NewsId',
   setup () {
     const route = useRoute()
+    const router = useRouter()
     const isLoad = ref(false)
     const apikey = ref('68a7a15d851d4a768b93e97ddaca25bd')
     const url = ref('https://newsapi.org/v2/')
@@ -73,13 +112,18 @@ export default {
         })
     }
 
+    const goBack = () => {
+      router.go(-1)
+    }
+
     return {
       isLoad,
       apikey,
       url,
       news,
       fetchNews,
-      currNews
+      currNews,
+      goBack
     }
   }
 }
