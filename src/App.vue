@@ -1,13 +1,15 @@
 <template>
   <News/>
+  <NewsId/>
 </template>
 
 <script>
 import News from './views/News/index.vue'
+import NewsId from './views/News/_id.vue'
 
 export default {
   components: {
-    News
+    News, NewsId
   }
 }
 </script>
