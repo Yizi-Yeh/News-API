@@ -8,6 +8,13 @@
       <hr />
       <br
     /></el-header>
+    <el-pagination
+  small
+  layout="prev, pager, next"
+  :total="50"
+  @current-change="setPage"
+  >
+</el-pagination>
     <el-main>
       <el-row class="search-wrapper" :gutter="10">
         <el-col :lg="8" :md="12" :sm="12" :xs="24">
@@ -19,7 +26,13 @@
             v-model="query"
             @keypress="fetchNews"
           ></el-input>
-          <el-button type="primary" size="small" icon="search" @click="submitInput()">查詢</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            icon="search"
+            @click="submitInput()"
+            >查詢</el-button
+          >
         </el-col>
 
         <div class="block">
@@ -65,7 +78,7 @@
       </el-row>
 
       <el-row :gutter="2">
-        <el-col :xs="24" :sm="12" :md="8" v-for="item in news.data" :key="item">
+        <el-col :xs="24" :sm="12" :md="8" v-for="(item,idx) in pagedNewsData" :key="item">
           <el-card class="card">
             <img :src="item.urlToImage" class="card-img" />
             <div style="padding: 14px">
@@ -77,9 +90,10 @@
                 <span>author：{{ item.author }}</span>
               </div>
               <div class="bottom">
-                <el-button type="text" class="button" @click="readMore"
+                <el-button type="text"  @click="readMore(idx)"
                   >查看更多</el-button
                 >
+
               </div>
             </div>
           </el-card>
@@ -91,7 +105,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, watch } from 'vue'
+import { defineComponent, reactive, ref, watch, computed } from 'vue'
 import axios from 'axios'
 import { onMounted } from '@vue/runtime-core'
 import { useRouter } from 'vue-router'
@@ -102,7 +116,7 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const isLoad = ref(false)
-    const apikey = ref('ee91784129d14f3aa19dd854211221a3')
+    const apikey = ref('68a7a15d851d4a768b93e97ddaca25bd')
     const url = ref('https://newsapi.org/v2/')
     const query = ref('COVID-19')
     const date = reactive({
@@ -130,14 +144,25 @@ export default defineComponent({
       value: ''
     })
 
-    const news = reactive({ data: {} })
+    const news = reactive({ data: [] })
+
+    const page = ref(1)
+    const pageSize = ref(20)
+
+    const setPage = (val) => {
+      page.value = val
+    }
+
+    const pagedNewsData = computed(() => {
+      return news.data.slice(pageSize.value * page.value - pageSize.value, pageSize.value * page.value)
+    })
 
     watch(
       () => sort.data.value,
       (newValue) => {
         axios
           .get(
-            `${url.value}everything?q=${query.value}&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
+            `${url.value}everything?q=${query.value}&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
           )
           .then((res) => {
             if (res.data.status) {
@@ -168,7 +193,7 @@ export default defineComponent({
     const fetchNews = () => {
       axios
         .get(
-          `${url.value}everything?q=COVID-19&from=2021-07-04&to=2021-07-06&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+          `${url.value}everything?q=COVID-19&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=${sort.data.value}&apiKey=${apikey.value}`
         )
         .then((res) => {
           if (res.data.status) {
@@ -203,7 +228,7 @@ export default defineComponent({
         const endTime = convert(date.data.endTime)
         axios
           .get(
-            `${url.value}everything?q=COVID-19&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+            `${url.value}everything?q=COVID-19&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
           )
           .then((res) => {
             if (res.data.status) {
@@ -243,7 +268,7 @@ export default defineComponent({
         const endTime = convert(date.data.endTime)
         axios
           .get(
-            `${url.value}everything?q=${query.value}&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+            `${url.value}everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
           )
           .then((res) => {
             if (res.data.status) {
@@ -274,8 +299,15 @@ export default defineComponent({
       return [date.getFullYear(), mnth, day].join('-')
     }
 
-    const readMore = () => {
-      router.push('/213')
+    const readMore = (idx) => {
+      const startTime = convert(date.data.startTime)
+      const endTime = convert(date.data.endTime)
+      axios.get(`${url.value}everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`).then((res) => {
+        if (res.data.status) {
+          console.log(res.data)
+          router.push(`/${idx}`)
+        }
+      })
     }
 
     return {
@@ -290,7 +322,11 @@ export default defineComponent({
       readMore,
       disabledDate,
       selectDate,
-      submitInput
+      submitInput,
+      pageSize,
+      page,
+      setPage,
+      pagedNewsData
     }
   }
 })

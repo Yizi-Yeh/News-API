@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import News from '../views/News/index.vue'
+import NewsId from '../views/News/_id.vue'
 
 const routes = [
   {
@@ -9,8 +10,8 @@ const routes = [
   },
   {
     path: '/:id',
-    name: 'News_id',
-    component: () => import('../views/News/_id.vue')
+    name: 'NewsId',
+    component: NewsId
   }
 ]
 
