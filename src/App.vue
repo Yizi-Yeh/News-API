@@ -1,17 +1,17 @@
 <template >
   <News />
-  <NewsId />
+  <!-- <NewsId /> -->
 </template>
 
 <script>
 import News from './views/News/index.vue'
-import NewsId from './views/News/_id.vue'
+// import NewsId from './views/News/_id.vue'
 import { onMounted, computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 export default {
   components: {
-    News,
-    NewsId
+    News
+    // NewsId
   },
   setup () {
     const store = useStore()

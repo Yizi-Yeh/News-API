@@ -52,6 +52,7 @@ export default createStore({
       state.news = payload
     },
     setPages (state, payload) {
+      state.page = payload
       console.log(payload)
     },
     setcurrNewsId (state, payload) {
