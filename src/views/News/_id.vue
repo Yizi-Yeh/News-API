@@ -16,7 +16,9 @@
         <el-col>
           <h3>Author：{{ currNews.author }}</h3>
         </el-col>
+
       </el-row>
+        <br>
 
       <el-row type="flex" class="row-bg" justify="center"
         >
