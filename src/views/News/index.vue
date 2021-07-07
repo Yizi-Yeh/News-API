@@ -305,6 +305,10 @@ export default defineComponent({
       router.push(`/${id}`)
     }
 
+    const queryHighlight = (val) => {
+      return val.replace(new RegExp(query, 'g'), `<span class="keyword">${query.value}</span>`)
+    }
+
     return {
       isLoad,
       query,
@@ -318,7 +322,8 @@ export default defineComponent({
       page,
       setPage,
       pagedNewsData,
-      currNewsId
+      currNewsId,
+      queryHighlight
     }
   }
 })
@@ -382,5 +387,8 @@ hr {
       padding: 10px;
     }
   }
+}
+.keyword{
+  color: aquamarine;
 }
 </style>
