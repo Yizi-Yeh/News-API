@@ -85,12 +85,11 @@ export default {
 
     onMounted(() => {
       fetchNews()
-      console.log(currNews)
     })
 
     const currNews = computed(() => {
       const id = route.params.id
-      console.log(id)
+
       return news.data.filter((d) => d.publishedAt === id)[0]
     })
     const fetchNews = () => {
@@ -102,13 +101,8 @@ export default {
           if (res.data.status) {
             isLoad.value = true
             news.data = res.data.articles
-            console.log(news.data)
           } else {
-            console.log(res.data.message)
           }
-        })
-        .catch((error) => {
-          console.log(error.data.message)
         })
     }
 

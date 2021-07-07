@@ -3,7 +3,6 @@
     <img class="load" src="@/assets/load.gif" />
   </div>
   <el-container v-show="isLoad">
-
     <el-header
       ><h1 class="title">News API</h1>
       <hr
@@ -31,7 +30,6 @@
               type="text"
               placeholder="請輸入關鍵字"
               v-model="query"
-              @keypress="fetchNews"
             ></el-input>
             <el-button
               type="primary"
@@ -46,7 +44,7 @@
         <el-col :lg="10" :md="12" :sm="12" :xs="24">
           <div class="block">
             <el-date-picker
-              v-model="date.data.startTime"
+              v-model="date.startTime"
               type="date"
               :value-format="yyyy - MM - dd"
               :disabled-date="disabledDate"
@@ -56,7 +54,7 @@
             </el-date-picker>
             --
             <el-date-picker
-              v-model="date.data.endTime"
+              v-model="date.endTime"
               type="date"
               :value-format="yyyy - MM - dd"
               :disabled-date="disabledDate"
@@ -120,65 +118,69 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, watch, computed } from 'vue'
+import { defineComponent, computed, watch } from 'vue'
 import axios from 'axios'
-import { onMounted } from '@vue/runtime-core'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'News',
   setup () {
     const router = useRouter()
-    const isLoad = ref(false)
-    const apikey = ref('68a7a15d851d4a768b93e97ddaca25bd')
-    const url = ref('https://newsapi.org/v2/')
-    const query = ref('COVID-19')
-    const date = reactive({
-      data: {
-        startTime: '',
-        endTime: ''
+    const store = useStore()
+
+    const isLoad = computed({
+      get () {
+        return store.getters.isLoad
+      },
+      set (value) {
+        store.commit('setcurrIsLoad', value)
       }
     })
 
-    const sort = reactive({
-      data: [
-        {
-          value: 'publishedAt',
-          label: '發布時間 publishedAt'
-        },
-        {
-          value: 'relevancy',
-          label: '相關度 relevancy'
-        },
-        {
-          value: 'popularity',
-          label: '人氣 popularity'
-        }
-      ],
-      value: ''
+    const query = computed({
+      get () {
+        return store.getters.query
+      },
+      set (value) {
+        store.commit('setcurrQuery', value)
+      }
     })
 
-    const news = reactive({ data: [] })
+    const date = computed({
+      get () {
+        return store.getters.date
+      },
+      set (value) {
+        store.commit('setcurrDate', value)
+        console.log(value)
+      }
+    })
 
-    const page = ref(1)
-    const pageSize = ref(20)
+    const sort = computed({
+      get () {
+        return store.getters.sort
+      },
+      set (value) {
+        store.commit('setcurrSort', value)
+      }
+    })
+
+    const pageSize = computed(() => store.getters.pageSize)
+    const page = computed(() => store.getters.page)
+    const pagedNewsData = computed(() => store.getters.pagedNewsData)
+
     const setPage = (val) => {
-      page.value = val
+      store.commit('setPages', val)
     }
-    const pagedNewsData = computed(() => {
-      return news.data.slice(
-        pageSize.value * page.value - pageSize.value,
-        pageSize.value * page.value
-      )
-    })
 
     watch(
-      () => sort.data.value,
+      () => sort.value.data.value,
       (newValue) => {
         axios
           .get(
-            `${url.value}everything?q=${query.value}&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=${newValue}&apiKey=${apikey.value}`
+           `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${newValue}&apiKey=72458e60882e4d5581df3c440a732340`
           )
           .then((res) => {
             if (res.data.status) {
@@ -190,8 +192,7 @@ export default defineComponent({
                 icon: 'success',
                 title: '篩選成功'
               })
-              news.data = res.data.articles
-              console.log(news)
+              store.commit('setNews', res.data.articles)
             } else {
               console.log(res.data.message)
             }
@@ -202,35 +203,19 @@ export default defineComponent({
       }
     )
 
-    onMounted(() => {
-      fetchNews()
-    })
-
-    const fetchNews = () => {
-      axios
-        .get(
-          `${url.value}everything?q=COVID-19&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=${sort.data.value}&apiKey=${apikey.value}`
-        )
-        .then((res) => {
-          if (res.data.status) {
-            isLoad.value = true
-            news.data = res.data.articles
-            console.log(news.data)
-          } else {
-            console.log(res.data.message)
-          }
-        })
-        .catch((error) => {
-          console.log(error.data.message)
-        })
-    }
-
     const disabledDate = (time) => {
       return time.getTime() > Date.now()
     }
 
+    function convert (str) {
+      const date = new Date(str)
+      const mnth = ('0' + (date.getMonth() + 1)).slice(-2)
+      const day = ('0' + date.getDate()).slice(-2)
+      return [date.getFullYear(), mnth, day].join('-')
+    }
+
     const selectDate = () => {
-      if (!date.data.startTime || !date.data.endTime) {
+      if (!date.value.startTime || !date.value.endTime) {
         Swal.fire({
           toast: true,
           position: 'top',
@@ -240,11 +225,11 @@ export default defineComponent({
           title: '請選擇時間區間'
         })
       } else {
-        const startTime = convert(date.data.startTime)
-        const endTime = convert(date.data.endTime)
+        const startTime = convert(date.value.startTime)
+        const endTime = convert(date.value.endTime)
         axios
           .get(
-            `${url.value}everything?q=COVID-19&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=72458e60882e4d5581df3c440a732340`
           )
           .then((res) => {
             if (res.data.status) {
@@ -256,7 +241,7 @@ export default defineComponent({
                 icon: 'success',
                 title: '篩選成功'
               })
-              news.data = res.data.articles
+              store.commit('setNews', res.data.articles)
               console.log(startTime)
               console.log(endTime)
             } else {
@@ -268,7 +253,6 @@ export default defineComponent({
           })
       }
     }
-
     const submitInput = () => {
       if (!query.value) {
         Swal.fire({
@@ -280,11 +264,9 @@ export default defineComponent({
           title: '請輸入關鍵字'
         })
       } else {
-        const startTime = convert(date.data.startTime)
-        const endTime = convert(date.data.endTime)
-        axios
+        return axios
           .get(
-            `${url.value}everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${sort.value.value}&apiKey=72458e60882e4d5581df3c440a732340`
           )
           .then((res) => {
             if (res.data.status) {
@@ -296,8 +278,7 @@ export default defineComponent({
                 icon: 'success',
                 title: '查詢成功'
               })
-              news.data = res.data.articles
-              console.log(query.value)
+              store.commit('setNews', res.data.articles)
             } else {
               console.log(res.data.message)
             }
@@ -308,22 +289,16 @@ export default defineComponent({
       }
     }
 
-    function convert (str) {
-      const date = new Date(str)
-      const mnth = ('0' + (date.getMonth() + 1)).slice(-2)
-      const day = ('0' + date.getDate()).slice(-2)
-      return [date.getFullYear(), mnth, day].join('-')
-    }
-
     const readMore = (idx) => {
-      const startTime = convert(date.data.startTime)
-      const endTime = convert(date.data.endTime)
+      const startTime = convert(date.value.startTime)
+      const endTime = convert(date.value.endTime)
       axios
         .get(
-          `${url.value}everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.data.value}&apiKey=${apikey.value}`
+         `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=72458e60882e4d5581df3c440a732340`
         )
         .then((res) => {
           if (res.data.status) {
+            store.commit('setNews', res.data.articles)
             console.log(res.data)
             router.push(`/${idx}`)
           }
@@ -332,13 +307,9 @@ export default defineComponent({
 
     return {
       isLoad,
-      apikey,
-      url,
       query,
       sort,
-      news,
       date,
-      fetchNews,
       readMore,
       disabledDate,
       selectDate,
