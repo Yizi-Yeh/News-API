@@ -1,13 +1,16 @@
 <template>
-  <router-view></router-view>
+ <div class="load-box" v-show="!isLoad">
+      <img class="load" src="@/assets/load.gif" />
+    </div>
+  <router-view>
+  </router-view>
 </template>
 
 <script>
 import { onMounted, computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 export default {
-  components: {
-  },
+  components: {},
   setup () {
     const store = useStore()
 
@@ -21,7 +24,8 @@ export default {
     })
 
     const init = () => {
-      store.dispatch('fetchNews').then(store.commit('setcurrIsLoad', true))
+      console.log(1)
+      store.dispatch('fetchNews').then(store.commit('setcurrIsLoad', true), console.log(2))
     }
 
     onMounted(() => {

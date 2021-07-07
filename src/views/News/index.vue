@@ -11,7 +11,7 @@
     <el-row>
       <el-col>
         <el-pagination
-          small
+          medium
           layout="prev, pager, next"
           :total="50"
           @current-change="setPage"
@@ -73,7 +73,7 @@
         </el-col>
 
         <el-col :lg="4" :md="6" :sm="6" :xs="24">
-          <el-select v-model="sort.data.value" placeholder="排序">
+          <el-select v-model="sort.data.value" placeholder="選擇排序">
             <el-option
               v-for="item in sort.data"
               :key="item.value"
@@ -85,7 +85,7 @@
         </el-col>
       </el-row>
 
-      <el-row :gutter="2">
+      <el-row :gutter="3">
         <el-col
           :xs="24"
           :sm="12"
@@ -96,17 +96,25 @@
           <el-card class="card">
             <img :src="item.urlToImage" class="card-img" />
             <div style="padding: 14px">
-              <h2 class="title">{{ item.title }}</h2>
+              <h3 class="title">{{ item.title }}</h3>
+              <br />
+              <!-- <h2 v-html="queryHighlight(item.title)"></h2> -->
               <div class="content">
-                <h3>{{ item.description.substring(0, 60) }}...</h3>
-                <span>{{ item.publishedAt }}</span>
+                <h4>{{ item.description.substring(0, 60) }} ...more</h4>
                 <br />
-                <span>author：{{ item.author }}</span>
-              </div>
-              <div class="bottom">
-                <el-button type="text" @click="readMore(item.publishedAt)"
-                  >查看更多</el-button
+
+                <el-button
+                  type="text"
+                  small
+                  @click="readMore(item.publishedAt)"
+                  >See Details</el-button
                 >
+
+                <div class="bottom">
+                    <span v-if="item.author ">Author：{{ item.author }}</span>
+                  <span>{{ item.publishedAt.substring(0, 10) }}</span>
+                  <br />
+                </div>
               </div>
             </div>
           </el-card>
@@ -189,7 +197,7 @@ export default defineComponent({
       (newValue) => {
         axios
           .get(
-           `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${newValue}&apiKey=72458e60882e4d5581df3c440a732340`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${newValue}&apiKey=ee91784129d14f3aa19dd854211221a3`
           )
           .then((res) => {
             if (res.data.status) {
@@ -238,7 +246,7 @@ export default defineComponent({
         const endTime = convert(date.value.endTime)
         axios
           .get(
-            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=72458e60882e4d5581df3c440a732340`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=ee91784129d14f3aa19dd854211221a3`
           )
           .then((res) => {
             if (res.data.status) {
@@ -275,7 +283,7 @@ export default defineComponent({
       } else {
         return axios
           .get(
-            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${sort.value.value}&apiKey=72458e60882e4d5581df3c440a732340`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${sort.value.value}&apiKey=ee91784129d14f3aa19dd854211221a3`
           )
           .then((res) => {
             if (res.data.status) {
@@ -305,9 +313,13 @@ export default defineComponent({
       router.push(`/${id}`)
     }
 
-    const queryHighlight = (val) => {
-      return val.replace(new RegExp(query, 'g'), `<span class="keyword">${query.value}</span>`)
-    }
+    const queryHighlight = computed((val) => {
+      pagedNewsData.value.filter((d) => d.title.includes(query))
+      return val.replace(
+        new RegExp(query.value, 'g'),
+        `<h2 class="keyword">${query.value}</h2>`
+      )
+    })
 
     return {
       isLoad,
@@ -335,10 +347,20 @@ export default defineComponent({
   box-sizing: border-box;
 }
 
-hr {
-  max-width: 50px;
-  border: solid 2px;
-  margin: 0 auto;
+.el-header {
+  h1 {
+    margin-top: 20px;
+    font-size: 3rem;
+  }
+  > hr {
+    max-width: 50px;
+    border: solid 2px;
+    margin: 1rem auto;
+  }
+}
+
+.el-pagination {
+  margin-top: 90px;
 }
 
 .load-box {
@@ -357,9 +379,9 @@ hr {
   height: 550px;
   flex-direction: column;
   justify-content: space-between;
-  padding-bottom: 10px;
   margin-right: 20px;
   margin-bottom: 20px;
+  padding: 5px;
   overflow: hidden;
   &-img {
     width: 100%;
@@ -368,6 +390,13 @@ hr {
     background-position: center;
     background-size: cover;
   }
+  .bottom{
+    padding-top:30px;
+    padding-bottom:30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
 }
 
 .search-wrapper {
@@ -375,7 +404,7 @@ hr {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin: 2% 0;
+  margin: 1% 1%;
   .block {
     display: flex;
     flex-direction: row;
@@ -388,7 +417,7 @@ hr {
     }
   }
 }
-.keyword{
-  color: aquamarine;
+.keyword {
+  color: rgb(255, 253, 127) !important;
 }
 </style>

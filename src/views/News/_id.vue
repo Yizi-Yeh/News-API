@@ -1,7 +1,7 @@
 <template>
   <el-container v-if="currNews">
     <el-header>
-      <el-page-header @back="goBack" content="新聞詳細內容"> </el-page-header>
+      <el-page-header @back="goBack" content="News Detail"> </el-page-header>
     </el-header>
     <el-main>
       <el-row>
@@ -19,14 +19,14 @@
 
       <el-row>
         <el-col>
-          <h1>author：{{ currNews.author }}</h1>
+          <h2>{{ currNews.content }}</h2>
           <br />
         </el-col>
       </el-row>
 
       <el-row>
         <el-col>
-          <h2>{{ currNews.content }}</h2>
+          <h1>author：{{ currNews.author }}</h1>
           <br />
         </el-col>
       </el-row>
@@ -45,7 +45,7 @@
         </el-col>
       </el-row>
     </el-main>
-    <el-footer>Footer</el-footer>
+    <el-footer><h4>Copyright 2021 all rights reserved</h4></el-footer>
   </el-container>
 </template>
 <script>

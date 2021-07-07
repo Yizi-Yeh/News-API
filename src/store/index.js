@@ -15,7 +15,8 @@ export default createStore({
       data: [
         {
           value: 'publishedAt',
-          label: '發布時間 publishedAt'
+          label:
+           '發布時間 publishedAt'
         },
         {
           value: 'relevancy',
@@ -65,7 +66,7 @@ export default createStore({
     fetchNews ({ commit }) {
       axios
         .get(
-          'https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=publishedAt&apiKey=72458e60882e4d5581df3c440a732340'
+          'https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=publishedAt&apiKey=ee91784129d14f3aa19dd854211221a3'
         )
         .then((res) => {
           commit('setNews', res.data.articles)
@@ -104,7 +105,6 @@ export default createStore({
     },
     currNews (state) {
       const { news } = state
-      console.log(news)
       return news.filter((item) => item.publishedAt === state.currNewsId)[0]
     }
 
