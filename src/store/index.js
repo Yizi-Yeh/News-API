@@ -30,11 +30,13 @@ export default createStore({
     pageSize: 20,
     page: 1,
     // 存放API回傳的新聞資訊
-    news: []
+    news: [],
+    currNewsId: null
 
   },
   mutations: {
     setcurrIsLoad (state, payload) {
+      console.log(payload)
       state.isLoad = payload
     },
     setcurrQuery (state, payload) {
@@ -52,6 +54,9 @@ export default createStore({
     setPages (state, payload) {
       state.page = payload
       console.log(payload)
+    },
+    setcurrNewsId (state, payload) {
+      state.currNewsId = payload
     }
   },
   actions: {
@@ -92,6 +97,13 @@ export default createStore({
       return state.news.slice(
         state.pageSize * state.page - state.pageSize,
         state.pageSize * state.page)
+    },
+    currNewsId (state) {
+      return state.currNewsId
+    },
+    currNews (state) {
+      const { news } = state
+      return news.filter((item) => item.publishedAt === state.setcurrNewsId)[0]
     }
 
   }

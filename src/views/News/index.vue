@@ -120,7 +120,7 @@
 <script>
 import { defineComponent, computed, watch } from 'vue'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 
@@ -128,6 +128,7 @@ export default defineComponent({
   name: 'News',
   setup () {
     const router = useRouter()
+    const route = useRoute()
     const store = useStore()
 
     const isLoad = computed({
@@ -164,6 +165,15 @@ export default defineComponent({
       },
       set (value) {
         store.commit('setcurrSort', value)
+      }
+    })
+
+    const currNewsId = computed({
+      get () {
+        return store.getters.currNewsId
+      },
+      set (value) {
+        store.commit('setcurrNewsId', value)
       }
     })
 
@@ -298,8 +308,9 @@ export default defineComponent({
         )
         .then((res) => {
           if (res.data.status) {
+            const id = route.params.id
+            store.commit('setcurrNewsId', id)
             store.commit('setNews', res.data.articles)
-            console.log(res.data)
             router.push(`/${idx}`)
           }
         })
@@ -317,7 +328,8 @@ export default defineComponent({
       pageSize,
       page,
       setPage,
-      pagedNewsData
+      pagedNewsData,
+      currNewsId
     }
   }
 })

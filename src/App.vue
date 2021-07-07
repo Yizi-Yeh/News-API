@@ -1,4 +1,4 @@
-<template>
+<template >
   <News />
   <NewsId />
 </template>
@@ -6,25 +6,36 @@
 <script>
 import News from './views/News/index.vue'
 import NewsId from './views/News/_id.vue'
-import { onMounted } from '@vue/runtime-core'
+import { onMounted, computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 export default {
   components: {
-    News, NewsId
+    News,
+    NewsId
   },
   setup () {
     const store = useStore()
 
+    const isLoad = computed({
+      get () {
+        return store.getters.isLoad
+      },
+      set (value) {
+        store.commit('setcurrIsLoad', value)
+      }
+    })
+
     const init = () => {
-      store.dispatch('fetchNews')
-      console.log('fetch news succss')
+      store.dispatch('fetchNews').then(store.commit('setcurrIsLoad', true))
     }
 
     onMounted(() => {
       init()
     })
 
-    return {}
+    return {
+      isLoad
+    }
   }
 }
 </script>
