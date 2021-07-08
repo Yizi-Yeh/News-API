@@ -24,8 +24,7 @@ export default {
     })
 
     const init = () => {
-      console.log(1)
-      store.dispatch('fetchNews').then(store.commit('setcurrIsLoad', true), console.log(2))
+      store.dispatch('fetchNews').then(store.commit('setcurrIsLoad', true))
     }
 
     onMounted(() => {

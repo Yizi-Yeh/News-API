@@ -215,7 +215,7 @@ export default defineComponent({
             }
           })
           .catch((error) => {
-            console.log(error.data.message)
+            console.log(error)
           })
       }
     )
@@ -262,11 +262,19 @@ export default defineComponent({
               console.log(startTime)
               console.log(endTime)
             } else {
-              console.log(res.data.message)
+              Swal.fire({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 1000,
+                icon: 'error',
+                title: '篩選失敗',
+                text: res.data.message
+              })
             }
           })
           .catch((error) => {
-            console.log(error.data.message)
+            console.log(error)
           })
       }
     }
@@ -301,7 +309,7 @@ export default defineComponent({
             }
           })
           .catch((error) => {
-            console.log(error.data.message)
+            console.log(error)
           })
       }
     }

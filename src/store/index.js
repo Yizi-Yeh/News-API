@@ -1,5 +1,14 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+
+const currentDate = new Date()
+const year = currentDate.getFullYear()
+const month = currentDate.getMonth() + 1
+const date = currentDate.getDate()
+const Now = `${year}-${month}-${date}`
+const daysAgo = 2
+const fromDaysAgo = `${year}-${month}-${(date - daysAgo)}`
+
 export default createStore({
   state: {
     isLoad: 'false',
@@ -8,8 +17,8 @@ export default createStore({
     // 關鍵字參數:預設為COVID-19
     query: 'COVID-19',
     date: {
-      startTime: '2021-07-04',
-      endTime: '2021-07-06'
+      startTime: fromDaysAgo,
+      endTime: Now
     },
     sort: {
       data: [
@@ -70,6 +79,8 @@ export default createStore({
         )
         .then((res) => {
           commit('setNews', res.data.articles)
+        }).catch((error) => {
+          console.log(error.data.message)
         })
     }
   },
