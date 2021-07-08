@@ -9,11 +9,11 @@ const Now = `${year}-${month}-${date}`
 const daysAgo = 2
 const fromDaysAgo = `${year}-${month}-${(date - daysAgo)}`
 
+const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
+
 export default createStore({
   state: {
     isLoad: 'false',
-    apikey: '72458e60882e4d5581df3c440a732340',
-    url: 'https://newsapi.org/v2/',
     // 關鍵字參數:預設為COVID-19
     query: 'COVID-19',
     date: {
@@ -75,7 +75,7 @@ export default createStore({
     fetchNews ({ commit }) {
       axios
         .get(
-          'https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=2021-07-04&to=2021-07-06&sortBy=publishedAt&apiKey=ee91784129d14f3aa19dd854211221a3'
+          `https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=${fromDaysAgo}&to=${Now}&sortBy=publishedAt&apiKey=${apikey}`
         )
         .then((res) => {
           commit('setNews', res.data.articles)

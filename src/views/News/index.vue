@@ -131,6 +131,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
+const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default defineComponent({
   name: 'News',
@@ -197,7 +198,7 @@ export default defineComponent({
       (newValue) => {
         axios
           .get(
-            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${newValue}&apiKey=ee91784129d14f3aa19dd854211221a3`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${newValue}&apiKey=${apikey}`
           )
           .then((res) => {
             if (res.data.status) {
@@ -246,7 +247,7 @@ export default defineComponent({
         const endTime = convert(date.value.endTime)
         axios
           .get(
-            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=ee91784129d14f3aa19dd854211221a3`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${sort.value.value}&apiKey=${apikey}`
           )
           .then((res) => {
             if (res.data.status) {
@@ -291,7 +292,7 @@ export default defineComponent({
       } else {
         return axios
           .get(
-            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${sort.value.value}&apiKey=ee91784129d14f3aa19dd854211221a3`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${sort.value.value}&apiKey=${apikey}`
           )
           .then((res) => {
             if (res.data.status) {
