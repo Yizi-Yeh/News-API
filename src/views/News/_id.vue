@@ -4,47 +4,46 @@
       <el-page-header @back="goBack" content="News Detail"> </el-page-header>
     </el-header>
     <el-main>
-      <el-row type="flex" class="row-bg" justify="center"
-        >
+      <el-row type="flex" class="row-bg" justify="center">
         <el-col class="main-title">
+          <h1>{{ currNews.title }}</h1>
+          <br>
           <img :src="currNews.urlToImage" class="main-img" />
         </el-col>
       </el-row>
 
-      <el-row v-if="currNews.author" type="flex" class="row-bg" justify="center"
-        >
+      <el-row
+        v-if="currNews.author"
+        type="flex"
+        class="row-bg"
+        justify="center"
+      >
         <el-col>
           <h3>Author：{{ currNews.author }}</h3>
         </el-col>
-
       </el-row>
-        <br>
+      <br />
 
-      <el-row type="flex" class="row-bg" justify="center"
-        >
+      <el-row type="flex" class="row-bg" justify="center">
         <el-col>
-          <h1>Title:</h1>
-          <hr>
-          <h2>{{ currNews.title }}</h2>
+          <hr />
+
           <br />
         </el-col>
       </el-row>
 
-      <el-row type="flex" class="row-bg" justify="center"
-        >
+      <el-row type="flex" class="row-bg" justify="center">
         <el-col class="main-content">
-
           <h3>{{ currNews.content }}</h3>
           <br />
         </el-col>
       </el-row>
 
-      <el-row type="flex" class="row-bg" justify="space-around"
-        >
+      <el-row type="flex" class="row-bg" justify="space-around">
         <el-col class="main-footer">
           <h4>Source：{{ currNews.source.name }}</h4>
           <h4>PublishedAt：{{ currNews.publishedAt }}</h4>
-          </el-col>
+        </el-col>
       </el-row>
     </el-main>
   </el-container>
@@ -111,7 +110,7 @@ export default {
     background-size: cover;
   }
 }
-.main-footer{
+.main-footer {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -119,8 +118,8 @@ export default {
   max-width: 900px;
 }
 hr {
-    max-width: 30px;
-    border: solid 2px;
-    margin: 0.5rem auto;
-  }
+  max-width: 30px;
+  border: solid 2px;
+  margin: 0.5rem auto;
+}
 </style>

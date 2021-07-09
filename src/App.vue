@@ -1,6 +1,8 @@
 <template>
  <div class="load-box" v-show="!isLoad">
       <img class="load" src="@/assets/load.gif" />
+        <br>
+      <h3>Loading...</h3>
     </div>
   <router-view>
   </router-view>
@@ -23,8 +25,25 @@ export default {
       }
     })
 
+    const handImgLoad = (itemArr) => {
+      let i = 1
+      itemArr.forEach(img => {
+        const imgs = new Image()
+        imgs.src = img.urlToImage
+        // 圖片載入完成後
+        imgs.onload = () => {
+          i++
+          console.log(i)
+          store.dispatch('handLoadState', i === itemArr.length)
+          console.log(itemArr.length)
+        }
+      })
+    }
+
     const init = () => {
-      store.dispatch('fetchNews').then(store.commit('setcurrIsLoad', true))
+      store.dispatch('fetchNews').then(res => {
+        handImgLoad(res)
+      })
     }
 
     onMounted(() => {
@@ -45,5 +64,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.load-box {
+  margin-top: 250px;
+  .load {
+    height: 150px;
+    margin: auto 0;
+  }
 }
 </style>

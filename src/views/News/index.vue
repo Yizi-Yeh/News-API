@@ -1,7 +1,4 @@
 <template>
-  <div class="load-box" v-show="!isLoad">
-    <img class="load" src="@/assets/load.gif" />
-  </div>
   <el-container v-show="isLoad">
     <el-header
       ><h1 class="title">News API</h1>
@@ -94,27 +91,23 @@
           :key="item"
         >
           <el-card class="card">
+            <h2>{{ item.publishedAt.substring(0, 10) }}</h2>
+            <h5 v-if="item.author">Author：{{ item.author }}</h5>
+            <br />
+            <br />
+
             <img :src="item.urlToImage" class="card-img" />
             <div style="padding: 14px">
-              <h3 class="title">{{ item.title }}</h3>
+              <h2 class="title">{{ item.title.substring(0, 80) }}</h2>
               <br />
-              <!-- <h2 v-html="queryHighlight(item.title)"></h2> -->
+              <br />
               <div class="content">
-                <h4>{{ item.description.substring(0, 60) }} ...more</h4>
+                <h4>{{ item.description.substring(0, 80) }} ...more</h4>
                 <br />
 
-                <el-button
-                  type="text"
-                  small
-                  @click="readMore(item.publishedAt)"
+                <el-button type="text" small @click="readMore(item.publishedAt)"
                   >See Details</el-button
                 >
-
-                <div class="bottom">
-                    <span v-if="item.author ">Author：{{ item.author }}</span>
-                  <span>{{ item.publishedAt.substring(0, 10) }}</span>
-                  <br />
-                </div>
               </div>
             </div>
           </el-card>
@@ -372,20 +365,12 @@ export default defineComponent({
   margin-top: 90px;
 }
 
-.load-box {
-  margin-top: 250px;
-  .load {
-    height: 150px;
-    margin: auto 0;
-  }
-}
-
 .card {
-  flex-basis: 550px;
+  flex-basis: 600px;
   flex-shrink: 0;
   display: flex;
   width: auto;
-  height: 550px;
+  height: 600px;
   flex-direction: column;
   justify-content: space-between;
   margin-right: 20px;
@@ -399,12 +384,19 @@ export default defineComponent({
     background-position: center;
     background-size: cover;
   }
-  .bottom{
-    padding-top:30px;
-    padding-bottom:30px;
+  .bottom {
+    padding-top: 30px;
+    padding-bottom: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+  }
+  h2 {
+    float: left;
+    padding-bottom: 10px;
+  }
+  h5 {
+    float: right;
   }
 }
 

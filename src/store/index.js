@@ -13,7 +13,7 @@ const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default createStore({
   state: {
-    isLoad: 'false',
+    isLoad: false,
     // 關鍵字參數:預設為COVID-19
     query: 'COVID-19',
     date: {
@@ -45,9 +45,9 @@ export default createStore({
 
   },
   mutations: {
-    setcurrIsLoad (state, payload) {
-      console.log(payload)
-      state.isLoad = payload
+    setcurrIsLoad (state, bool) {
+      state.isLoad = bool
+      console.log(typeof (bool))
     },
     setcurrQuery (state, payload) {
       state.query = payload
@@ -73,15 +73,19 @@ export default createStore({
   actions: {
     // 取得新聞資料
     fetchNews ({ commit }) {
-      axios
+      return axios
         .get(
           `https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=${fromDaysAgo}&to=${Now}&sortBy=publishedAt&apiKey=${apikey}`
         )
         .then((res) => {
           commit('setNews', res.data.articles)
+          return res.data.articles
         }).catch((error) => {
           console.log(error.data.message)
         })
+    },
+    handLoadState ({ commit }, bool) {
+      commit('setcurrIsLoad', bool)
     }
   },
   getters: {
