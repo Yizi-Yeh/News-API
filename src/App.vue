@@ -26,16 +26,16 @@ export default {
     })
 
     const handImgLoad = (itemArr) => {
-      let i = 1
+      let i = 0
       itemArr.forEach(img => {
         const imgs = new Image()
         imgs.src = img.urlToImage
         // 圖片載入完成後
         imgs.onload = () => {
           i++
-          console.log(i)
-          store.dispatch('handLoadState', i === itemArr.length)
-          console.log(itemArr.length)
+          if (i >= 20) {
+            store.dispatch('handLoadState', true)
+          }
         }
       })
     }
