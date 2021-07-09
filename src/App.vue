@@ -30,7 +30,6 @@ export default {
       itemArr.forEach(img => {
         const imgs = new Image()
         imgs.src = img.urlToImage
-        // 圖片載入完成後
         imgs.onload = () => {
           i++
           if (i >= 20) {
