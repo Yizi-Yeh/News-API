@@ -90,24 +90,20 @@
           v-for="item in pagedNewsData"
           :key="item"
         >
-          <el-card class="card">
-            <h2>{{ item.publishedAt.substring(0, 10) }}</h2>
-            <h5 v-if="item.author">Author：{{ item.author }}</h5>
-            <br />
-            <br />
-
+          <el-card class="card" @click="readMore(item.publishedAt)">
+            <div class="top">
+              <h2>{{ item.publishedAt.substring(0, 10) }}</h2>
+            </div>
             <img :src="item.urlToImage" class="card-img" />
             <div style="padding: 14px">
-              <h2 class="title">{{ item.title.substring(0, 80) }}</h2>
-              <br />
-              <br />
+              <div class="title">
+                <h2>{{ item.title }}</h2>
+              </div>
               <div class="content">
                 <h4>{{ item.description.substring(0, 80) }} ...more</h4>
-                <br />
-
-                <el-button type="text" small @click="readMore(item.publishedAt)"
-                  >See Details</el-button
-                >
+              </div>
+              <div class="bottom">
+                <h4 v-if="item.author">Author：{{ item.author }}</h4>
               </div>
             </div>
           </el-card>
@@ -347,8 +343,11 @@ export default defineComponent({
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 微軟正黑體;
 }
-
+body{
+  background-color: black;
+}
 .el-header {
   h1 {
     margin-top: 20px;
@@ -360,12 +359,16 @@ export default defineComponent({
     margin: 1rem auto;
   }
 }
-
+.el-card__body{
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
 .el-pagination {
   margin-top: 90px;
 }
 
 .card {
+  position: relative;
   flex-basis: 600px;
   flex-shrink: 0;
   display: flex;
@@ -377,26 +380,31 @@ export default defineComponent({
   margin-bottom: 20px;
   padding: 5px;
   overflow: hidden;
+  &:hover{
+    filter: opacity(40%);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .top {
+  float: left;
+  padding: 1rem;
+  }
+  .title {
+    margin: 1rem;
+  }
+  .content {
+  }
+  .bottom {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+  }
   &-img {
     width: 100%;
     height: 220px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-  }
-  .bottom {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  h2 {
-    float: left;
-    padding-bottom: 10px;
-  }
-  h5 {
-    float: right;
   }
 }
 
