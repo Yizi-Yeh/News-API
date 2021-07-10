@@ -1,8 +1,7 @@
 <template>
   <el-container v-show="isLoad">
-    <br>
-    <el-header
-      ><h1 class="title">News API</h1></el-header>
+    <br />
+    <el-header><h1 class="title">News API</h1></el-header>
     <el-row>
       <el-col>
         <el-pagination
@@ -19,19 +18,20 @@
         <el-col :lg="6" :md="8" :sm="12" :xs="24" justify="center">
           <div class="block">
             <el-input
+              style="font-family:'EB Garamond"
               icon="search"
               type="text"
-              placeholder="請輸入關鍵字"
+              placeholder="Search News"
               v-model="query"
               @blur="blurSearchFor"
               v-focus="blurFocus"
             ></el-input>
             <el-button
-              type="primary"
+              type="info"
               size="medium"
               icon="search"
               @click="submitInput()"
-              >查詢</el-button
+              >Search</el-button
             >
           </div>
         </el-col>
@@ -39,11 +39,12 @@
         <el-col :lg="10" :md="12" :sm="12" :xs="24">
           <div class="block">
             <el-date-picker
+              style="font-family:'EB Garamond"
               v-model="date.startTime"
               type="date"
               :value-format="yyyy - MM - dd"
               :disabled-date="disabledDate"
-              placeholder="選擇開始時間"
+              placeholder="Select StartTime"
               format="YYYY 年 MM 月 DD 日"
             >
             </el-date-picker>
@@ -54,22 +55,23 @@
               :value-format="yyyy - MM - dd"
               :disabled-date="disabledDate"
               format="YYYY 年 MM 月 DD 日"
-              placeholder="選擇結束時間"
+              placeholder="Select EndTime"
             >
             </el-date-picker>
             <el-button
-              type="primary"
+              type="info"
               size="medium"
               icon="search"
               @click="selectDate()"
-              >篩選</el-button
+              >Search</el-button
             >
           </div>
         </el-col>
 
         <el-col :lg="4" :md="6" :sm="6" :xs="24">
-          <el-select v-model="sort.data.value" placeholder="選擇排序">
+          <el-select style="font-family:'EB Garamond" v-model="sort.data.value" placeholder="Sort News">
             <el-option
+              style="font-family:'EB Garamond"
               v-for="item in sort.data"
               :key="item.value"
               :label="item.label"
@@ -353,10 +355,12 @@ export default defineComponent({
 .h2,
 .h3,
 .h4,
+.input,
 h1,
 h2,
 h3,
-h4 {
+h4,
+input {
   font-family: "EB Garamond", serif;
   font-style: normal;
   font-weight: 400;
@@ -376,11 +380,10 @@ h4 {
 }
 .el-input__inner {
   border-radius: 0px;
-  border-radius: 9999vmax;
 }
 
 .el-button {
-  border-radius: 9999vmax;
+  font-family: "EB Garamond", serif;
   border: transparent;
   width: auto;
   &:hover {
@@ -392,7 +395,8 @@ h4 {
   padding-bottom: 5px;
 }
 .el-pagination {
-  margin-top: 6rem;
+  font-family: "EB Garamond", serif;
+  margin-top: 3rem;
 }
 
 .card {
@@ -421,7 +425,7 @@ h4 {
     text-align: left;
     margin-top: 1rem;
     margin-bottom: 2rem;
-    color: #0c5288;
+    color: #000305;
     line-height: 1.4rem;
   }
   .content {

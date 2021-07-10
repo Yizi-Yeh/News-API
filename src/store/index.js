@@ -25,15 +25,15 @@ export default createStore({
         {
           value: 'publishedAt',
           label:
-           '發布時間 publishedAt'
+           'publishedAt'
         },
         {
           value: 'relevancy',
-          label: '相關度 relevancy'
+          label: 'relevancy'
         },
         {
           value: 'popularity',
-          label: '人氣 popularity'
+          label: 'popularity'
         }],
       value: ''
     },
