@@ -97,7 +97,7 @@
             <img :src="item.urlToImage" class="card-img" />
             <div style="padding: 10px">
               <div class="title">
-                <h3>{{ item.title }}</h3>
+                <h3>{{ item.title.substring(0, 60)}} ... </h3>
               </div>
               <div class="content">
                 <h4>{{ item.description.substring(0, 80) }} ...more</h4>
@@ -380,6 +380,7 @@ input {
 }
 .el-input__inner {
   border-radius: 0px;
+  margin-bottom: 3rem;
 }
 
 .el-button {

@@ -23,7 +23,7 @@
             >
             <el-col
               ><p class="publishedAt">
-                PublishedAt：{{ currNews.publishedAt.substring(10,0) }}
+                PublishedAt：{{ currNews.publishedAt.substring(10, 0) }}
               </p></el-col
             >
           </el-row>
@@ -160,5 +160,73 @@ p {
   font-weight: 500;
   letter-spacing: 0.03em;
   line-height: 28px;
+}
+@media screen and (min-width: 320px) and (max-width: 820px) {
+  .el-container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .el-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0px;
+    .top {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100vw;
+      padding-top: 30px;
+      padding-left: 30px;
+      padding-right: 30px;
+      max-width: 750px;
+      .left {
+        width: 100%;
+        height: 300px;
+        text-align: left;
+        p {
+          font-style: normal;
+          font-size: 15px;
+          letter-spacing: 0.03em;
+          line-height: 25px;
+          margin-bottom: 2rem;
+        }
+        .title {
+          margin-top: 1rem;
+          letter-spacing: normal;
+          font-weight: bolder;
+          margin-bottom: 1rem;
+        }
+        .author {
+          margin-bottom: 1rem;
+        }
+        .source {
+          margin-bottom: 1rem;
+        }
+        .publishedAt {
+          margin-bottom: 1rem;
+        }
+      }
+      .right {
+        width: 100%;
+        height: inherit;
+        .main-img {
+          margin-top: 2rem;
+          object-fit: cover;
+          height: auto;
+          width: 100%;
+          max-width: 320px;
+        }
+      }
+    }
+    .bottom {
+      padding-left: 30px;
+      padding-right: 30px;
+      text-align: left;
+    }
+  }
 }
 </style>
