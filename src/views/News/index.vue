@@ -8,7 +8,6 @@
     <el-row>
       <el-col>
         <el-pagination
-          medium
           layout="prev, pager, next"
           :total="50"
           @current-change="setPage"
@@ -92,18 +91,18 @@
         >
           <el-card class="card" @click="readMore(item.publishedAt)">
             <div class="top">
-              <h2>{{ item.publishedAt.substring(0, 10) }}</h2>
+              <h3>{{ item.publishedAt.substring(0, 10) }}</h3>
             </div>
             <img :src="item.urlToImage" class="card-img" />
-            <div style="padding: 14px">
+            <div style="padding: 10px">
               <div class="title">
-                <h2>{{ item.title }}</h2>
+                <h3>{{ item.title }}</h3>
               </div>
               <div class="content">
                 <h4>{{ item.description.substring(0, 80) }} ...more</h4>
               </div>
               <div class="bottom">
-                <h4 v-if="item.author">Author：{{ item.author }}</h4>
+                <h4>Author：{{ item.author ? item.author : "none" }}</h4>
               </div>
             </div>
           </el-card>
@@ -345,7 +344,7 @@ export default defineComponent({
   box-sizing: border-box;
   font-family: 微軟正黑體;
 }
-body{
+body {
   background-color: black;
 }
 .el-header {
@@ -359,40 +358,56 @@ body{
     margin: 1rem auto;
   }
 }
-.el-card__body{
+.el-input__inner {
+  border-radius:0px;
+  border-radius: 9999vmax;
+}
+
+.el-button {
+  border-radius: 9999vmax;
+  border: transparent;
+  width: auto;
+  &:hover {
+    transition-duration: 0.5s;
+  }
+}
+.el-card__body {
   padding-top: 10px;
   padding-bottom: 5px;
 }
 .el-pagination {
-  margin-top: 90px;
+  margin-top: 6rem;
 }
 
 .card {
   position: relative;
-  flex-basis: 600px;
+  flex-basis: 550px;
   flex-shrink: 0;
   display: flex;
   width: auto;
-  height: 600px;
+  height: 550px;
   flex-direction: column;
   justify-content: space-between;
   margin-right: 20px;
   margin-bottom: 20px;
   padding: 5px;
   overflow: hidden;
-  &:hover{
-    filter: opacity(40%);
+  &:hover {
     cursor: pointer;
-    transition: 0.3s;
   }
   .top {
-  float: left;
-  padding: 1rem;
+    float: left;
+    margin-bottom: 1rem;
   }
   .title {
-    margin: 1rem;
+    text-align: left;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    color: #0067b5;
+    line-height: 1.4rem;
   }
   .content {
+    text-align: left;
   }
   .bottom {
     position: absolute;
@@ -405,6 +420,10 @@ body{
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    &:hover {
+      filter: opacity(40%);
+      transition: 0.3s;
+    }
   }
 }
 
