@@ -119,6 +119,8 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
+import { useKeypress } from 'vue3-keypress'
+
 const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default defineComponent({
@@ -126,6 +128,20 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const store = useStore()
+
+    const someSuccessCallback = ({ keyCode }) => {
+      submitInput()
+    }
+
+    useKeypress({
+      keyEvent: 'keypress',
+      keyBinds: [
+        {
+          keyCode: 'enter', // or keyCode as integer, e.g. 40
+          success: someSuccessCallback
+        }
+      ]
+    })
 
     const isLoad = computed({
       get () {
