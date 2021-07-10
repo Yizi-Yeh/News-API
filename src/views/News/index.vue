@@ -1,10 +1,8 @@
 <template>
   <el-container v-show="isLoad">
+    <br>
     <el-header
-      ><h1 class="title">News API</h1>
-      <hr
-    /></el-header>
-
+      ><h1 class="title">News API</h1></el-header>
     <el-row>
       <el-col>
         <el-pagination
@@ -21,11 +19,12 @@
         <el-col :lg="6" :md="8" :sm="12" :xs="24" justify="center">
           <div class="block">
             <el-input
-              v-focus
               icon="search"
               type="text"
               placeholder="請輸入關鍵字"
               v-model="query"
+              @blur="blurSearchFor"
+              v-focus="blurFocus"
             ></el-input>
             <el-button
               type="primary"
@@ -120,7 +119,6 @@ import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 import { useKeypress } from 'vue3-keypress'
-
 const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default defineComponent({
@@ -137,7 +135,7 @@ export default defineComponent({
       keyEvent: 'keypress',
       keyBinds: [
         {
-          keyCode: 'enter', // or keyCode as integer, e.g. 40
+          keyCode: 'enter',
           success: someSuccessCallback
         }
       ]
@@ -326,14 +324,6 @@ export default defineComponent({
       router.push(`/${id}`)
     }
 
-    const queryHighlight = computed((val) => {
-      pagedNewsData.value.filter((d) => d.title.includes(query))
-      return val.replace(
-        new RegExp(query.value, 'g'),
-        `<h2 class="keyword">${query.value}</h2>`
-      )
-    })
-
     return {
       isLoad,
       query,
@@ -347,21 +337,31 @@ export default defineComponent({
       page,
       setPage,
       pagedNewsData,
-      currNewsId,
-      queryHighlight
+      currNewsId
     }
   }
 })
 </script>
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap");
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 微軟正黑體;
 }
-body {
-  background-color: black;
+.h1,
+.h2,
+.h3,
+.h4,
+h1,
+h2,
+h3,
+h4 {
+  font-family: "EB Garamond", serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 28px;
 }
 .el-header {
   h1 {
@@ -375,7 +375,7 @@ body {
   }
 }
 .el-input__inner {
-  border-radius:0px;
+  border-radius: 0px;
   border-radius: 9999vmax;
 }
 
@@ -396,6 +396,7 @@ body {
 }
 
 .card {
+  font-family: AGaramondPro-Regular, sans-serif;
   position: relative;
   flex-basis: 550px;
   flex-shrink: 0;
@@ -416,10 +417,11 @@ body {
     margin-bottom: 1rem;
   }
   .title {
+    font-size: 1.3rem;
     text-align: left;
     margin-top: 1rem;
     margin-bottom: 2rem;
-    color: #0067b5;
+    color: #0c5288;
     line-height: 1.4rem;
   }
   .content {
@@ -438,7 +440,7 @@ body {
     background-size: cover;
     &:hover {
       filter: opacity(40%);
-      transition: 0.3s;
+      transition: 0.3s ease;
     }
   }
 }

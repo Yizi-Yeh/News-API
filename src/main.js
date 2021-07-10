@@ -11,12 +11,8 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 
 const app = createApp(App)
 app.directive('focus', {
-  // 在 directive中為mounted
-  // mounted 會回傳 dom(el)
   mounted (el) {
-  // 回傳掛載元素
-    el.focus()
-    console.log(el)
+    el.querySelector('input').focus()
   }
 })
   .use(router)

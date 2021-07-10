@@ -89,6 +89,20 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
+.h1,
+.h2,
+.h3,
+.h4,
+h1,
+h2,
+h3,
+h4 {
+  font-family: "EB Garamond", serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 28px;
+}
 .header {
   padding-top: 50px;
   padding-left: 100px;
