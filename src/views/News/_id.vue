@@ -1,50 +1,53 @@
 <template>
   <el-container v-if="currNews">
-    <el-header class="header">
-      <el-page-header @back="goBack" content="News Detail"> </el-page-header>
-    </el-header>
     <el-main>
-      <el-row type="flex" class="row-bg" justify="center">
-        <el-col class="main-title">
-          <h1>{{ currNews.title }}</h1>
-          <br>
-          <img :src="currNews.urlToImage" class="main-img" />
-        </el-col>
-      </el-row>
+      <div class="top">
+        <div class="left">
+          <el-row>
+            <el-col>
+              <el-header class="header">
+                <el-page-header @back="goBack" content="News Detail">
+                </el-page-header>
+              </el-header>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <h1 class="title">{{ currNews.title }}</h1></el-col
+            >
+            <el-col>
+              <p class="author">Author：{{ currNews.author }}</p></el-col
+            >
+            <el-col
+              ><p class="source">Source：{{ currNews.source.name }}</p></el-col
+            >
+            <el-col
+              ><p class="publishedAt">
+                PublishedAt：{{ currNews.publishedAt.substring(10,0) }}
+              </p></el-col
+            >
+          </el-row>
+        </div>
 
-      <el-row
-        v-if="currNews.author"
-        type="flex"
-        class="row-bg"
-        justify="center"
-      >
-        <el-col>
-          <h3>Author：{{ currNews.author }}</h3>
-        </el-col>
-      </el-row>
-      <br />
+        <div class="right">
+          <el-row>
+            <el-col>
+              <img :src="currNews.urlToImage" class="main-img" />
+            </el-col>
+          </el-row>
+        </div>
+      </div>
 
-      <el-row type="flex" class="row-bg" justify="center">
-        <el-col>
-          <hr />
-
-          <br />
-        </el-col>
-      </el-row>
-
-      <el-row type="flex" class="row-bg" justify="center">
-        <el-col class="main-content">
-          <h3>{{ currNews.content }}</h3>
-          <br />
-        </el-col>
-      </el-row>
-
-      <el-row type="flex" class="row-bg" justify="space-around">
-        <el-col class="main-footer">
-          <h4>Source：{{ currNews.source.name }}</h4>
-          <h4>PublishedAt：{{ currNews.publishedAt }}</h4>
-        </el-col>
-      </el-row>
+      <div class="bottom">
+        <div class="content">
+          <el-row type="flex" class="row-bg" justify="center">
+            <el-col class="main-content">
+              <h3>{{ currNews.content }}</h3>
+              <br />
+            </el-col>
+          </el-row>
+        </div>
+      </div>
     </el-main>
   </el-container>
 </template>
@@ -88,6 +91,60 @@ export default {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
+}
+.el-container {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.top {
+  padding-top: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 100px;
+  width: auto;
+  .left {
+    width: 35%;
+    height: 500px;
+    text-align: left;
+    p {
+      font-style: normal;
+      font-size: 15px;
+      letter-spacing: 0.03em;
+      line-height: 25px;
+      margin-bottom: 2rem;
+    }
+    .title {
+      margin-top: 4rem;
+      letter-spacing: normal;
+      font-weight: bolder;
+      margin-bottom: 2rem;
+    }
+    .author {
+      margin-bottom: 2rem;
+    }
+    .source {
+      margin-bottom: 2rem;
+    }
+    .publishedAt {
+      margin-bottom: 2rem;
+    }
+  }
+  .right {
+    width: 60%;
+    height: inherit;
+    .main-img {
+      object-fit: cover;
+      height: 500px;
+      margin-bottom: 60px;
+      width: 100%;
+      max-width: 830px;
+    }
+  }
 }
 .h1,
 .h2,
@@ -96,44 +153,12 @@ export default {
 h1,
 h2,
 h3,
-h4 {
+h4,
+p {
   font-family: "EB Garamond", serif;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.03em;
   line-height: 28px;
-}
-.header {
-  padding-top: 50px;
-  padding-left: 100px;
-  padding-bottom: 50px;
-  font-size: 1rem;
-}
-.main-content {
-  max-width: 640px;
-}
-.main-title {
-  overflow: hidden;
-  margin-left: auto;
-  margin-right: auto;
-  .main-img {
-    max-width: 900px;
-    height: auto;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
-}
-.main-footer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  max-width: 900px;
-}
-hr {
-  max-width: 30px;
-  border: solid 2px;
-  margin: 0.5rem auto;
 }
 </style>
