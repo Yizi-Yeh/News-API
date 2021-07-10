@@ -42,6 +42,7 @@ export default {
     const init = () => {
       store.dispatch('fetchNews').then(res => {
         handImgLoad(res)
+        console.log(res)
       })
     }
 
@@ -57,6 +58,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/style/basic.scss';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

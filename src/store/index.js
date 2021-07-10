@@ -9,7 +9,7 @@ const Now = `${year}-${month}-${date}`
 const daysAgo = 2
 const fromDaysAgo = `${year}-${month}-${(date - daysAgo)}`
 
-const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
+const apikey = '72458e60882e4d5581df3c440a732340'
 
 export default createStore({
   state: {

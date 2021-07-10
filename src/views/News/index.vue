@@ -36,40 +36,50 @@
           </div>
         </el-col>
 
-        <el-col :lg="10" :md="12" :sm="12" :xs="24">
+        <el-col :lg="9" :md="12" :sm="24" :xs="24">
           <div class="block">
-            <el-date-picker
-              style="font-family:'EB Garamond"
-              v-model="date.startTime"
-              type="date"
-              :value-format="yyyy - MM - dd"
-              :disabled-date="disabledDate"
-              placeholder="Select StartTime"
-              format="YYYY 年 MM 月 DD 日"
-            >
-            </el-date-picker>
-            --
-            <el-date-picker
-              v-model="date.endTime"
-              type="date"
-              :value-format="yyyy - MM - dd"
-              :disabled-date="disabledDate"
-              format="YYYY 年 MM 月 DD 日"
-              placeholder="Select EndTime"
-            >
-            </el-date-picker>
-            <el-button
-              type="info"
-              size="medium"
-              icon="search"
-              @click="selectDate()"
-              >Search</el-button
-            >
+            <el-col :lg="11" >
+              <el-date-picker
+                style="font-family:'EB Garamond"
+                v-model="date.startTime"
+                type="date"
+                :value-format="yyyy - MM - dd"
+                :disabled-date="disabledDate"
+                placeholder="Select StartTime"
+                format="YYYY-MM-DD"
+              >
+              </el-date-picker>
+            </el-col>
+            <el-col :lg="12" >
+              <el-date-picker
+                v-model="date.endTime"
+                style="font-family:'EB Garamond"
+                type="date"
+                :value-format="yyyy - MM - dd"
+                :disabled-date="disabledDate"
+                format="YYYY-MM-DD"
+                placeholder="Select EndTime"
+              >
+              </el-date-picker>
+            </el-col>
+            <el-col :lg="2" :md="12" :sm="12" :xs="24">
+              <el-button
+                type="info"
+                size="medium"
+                icon="search"
+                @click="selectDate()"
+                >Search</el-button
+              >
+               </el-col>
           </div>
         </el-col>
 
         <el-col :lg="4" :md="6" :sm="6" :xs="24">
-          <el-select style="font-family:'EB Garamond" v-model="sort.data.value" placeholder="Sort News">
+          <el-select
+            style="font-family:'EB Garamond"
+            v-model="sort.data.value"
+            placeholder="Sort News"
+          >
             <el-option
               style="font-family:'EB Garamond"
               v-for="item in sort.data"
@@ -97,7 +107,7 @@
             <img :src="item.urlToImage" class="card-img" />
             <div style="padding: 10px">
               <div class="title">
-                <h3>{{ item.title.substring(0, 60)}} ... </h3>
+                <h3>{{ item.title.substring(0, 60) }} ...</h3>
               </div>
               <div class="content">
                 <h4>{{ item.description.substring(0, 80) }} ...more</h4>
@@ -121,7 +131,7 @@ import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 import { useKeypress } from 'vue3-keypress'
-const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
+const apikey = '72458e60882e4d5581df3c440a732340'
 
 export default defineComponent({
   name: 'News',
@@ -346,6 +356,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap");
+@import "@/style/basic.scss";
 * {
   padding: 0;
   margin: 0;
@@ -370,7 +381,7 @@ input {
 .el-header {
   h1 {
     margin-top: 20px;
-    font-size: 3rem;
+    font-size: $heading-font-xl;
   }
   > hr {
     max-width: 50px;
@@ -422,15 +433,16 @@ input {
     margin-bottom: 1rem;
   }
   .title {
-    font-size: 1.3rem;
+    font-size: $heading-font-sm;
     text-align: left;
     margin-top: 1rem;
     margin-bottom: 2rem;
-    color: #000305;
-    line-height: 1.4rem;
+    color: $color_black;
+    line-height: $line-height-sm;
   }
   .content {
     text-align: left;
+    font-size: $text-font-md;
   }
   .bottom {
     position: absolute;
@@ -467,8 +479,5 @@ input {
       padding: 10px;
     }
   }
-}
-.keyword {
-  color: rgb(255, 253, 127) !important;
 }
 </style>

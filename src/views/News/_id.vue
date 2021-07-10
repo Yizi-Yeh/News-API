@@ -6,7 +6,11 @@
           <el-row>
             <el-col>
               <el-header class="header">
-                <el-page-header @back="goBack" content="News Detail">
+                <el-page-header
+                  @back="goBack"
+                  content="News Detail"
+                  style="font-family:'EB Garamond"
+                >
                 </el-page-header>
               </el-header>
             </el-col>
@@ -32,7 +36,7 @@
         <div class="right">
           <el-row>
             <el-col>
-              <img :src="currNews.urlToImage" class="main-img" />
+              <img  :src="currNews.urlToImage" class="main-img" />
             </el-col>
           </el-row>
         </div>
@@ -44,6 +48,8 @@
             <el-col class="main-content">
               <h3>{{ currNews.content }}</h3>
               <br />
+              <h3 class="readDetail" @click="readDetail(currNews.url)">Readmore</h3>
+              <hr>
             </el-col>
           </el-row>
         </div>
@@ -77,16 +83,24 @@ export default {
       router.go(-1)
     }
 
+    const readDetail = (idx) => {
+      const id = idx
+      console.log(id)
+      window.open(id)
+    }
+
     return {
       isLoad,
       currNews,
-      goBack
+      goBack,
+      readDetail
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "@/style/basic.scss";
 * {
   padding: 0;
   margin: 0;
@@ -113,7 +127,7 @@ export default {
     text-align: left;
     p {
       font-style: normal;
-      font-size: 15px;
+      font-size: $text-font-lg;
       letter-spacing: 0.03em;
       line-height: 25px;
       margin-bottom: 2rem;
@@ -143,9 +157,24 @@ export default {
       margin-bottom: 60px;
       width: 100%;
       max-width: 830px;
+
     }
   }
 }
+.bottom{
+  .readDetail{
+      &:hover {
+        cursor: pointer;
+        filter: opacity(50%);
+        transition: 0.3s;
+      }
+  }
+}
+hr {
+    max-width: 80px;
+    border: solid 1px;
+    margin: 2px auto;
+  }
 .h1,
 .h2,
 .h3,
@@ -189,7 +218,7 @@ p {
         text-align: left;
         p {
           font-style: normal;
-          font-size: 15px;
+          font-size: $text-font-sm;
           letter-spacing: 0.03em;
           line-height: 25px;
           margin-bottom: 2rem;

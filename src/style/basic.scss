@@ -1,0 +1,76 @@
+// 顏色定義
+$color_blue: #2c3e50;
+$color_brown: #e6af2e;
+$color_yellow: #f5d061;
+$color_white: #ececec;
+$color_black: #030303;
+
+// 字型
+$heading-font-xs: 1rem;
+$heading-font-sm: 1.3rem;
+$heading-font-md: 2rem;
+$heading-font-lg: 2.2rem;
+$heading-font-xl: 3rem;
+
+$text-font-xs: 0.8125rem;
+$text-font-sm: 0.9375rem;
+$text-font-md: 1rem;
+$text-font-lg: 1.2rem;
+
+$line-height-sm: 1.4;
+$line-height-md: 1.6;
+$line-height-lg: 2;
+
+$letter-spacing-xs: 0.5px;
+$letter-spacing-sm: 1px;
+$letter-spacing-md: 5px;
+$letter-spacing-lg: 10px;
+
+
+// mixin
+
+// 垂直水平置中
+@mixin center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 長寬
+@mixin size($w, $h) {
+  width: $w;
+  height: $h;
+}
+
+// 圖片滿版
+@mixin img-objectfit {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+// 濾鏡
+@mixin filter($opacity) {
+  filter: brightness($opacity);
+}
+
+// 彈性盒
+@mixin flex($direct, $main, $cross) {
+  display: flex;
+  flex-direction: $direct;
+  justify-content: $main;
+  align-items: $cross;
+}
+
+// 浮動
+@mixin indep {
+  position: absolute;
+}
+
+// 動畫
+@mixin trans($s) {
+  transition: $s;
+}
