@@ -110,7 +110,8 @@
             <div class="top">
               <h3>{{ item.publishedAt.substring(0, 10) }}</h3>
             </div>
-            <img :src="item.urlToImage" class="card-img" />
+             <img v-lazy="item.urlToImage" class="card-img" />
+            <!-- <img :src="item.urlToImage" class="card-img" /> -->
             <div style="padding: 10px">
               <div class="title">
                 <h3>{{ item.title.substring(0, 60) }} ...</h3>
