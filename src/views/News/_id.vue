@@ -130,6 +130,7 @@ export default {
   margin-right: auto;
   padding-left: 100px;
   width: auto;
+  font-size: $text-font-xl;
   .left {
     width: 35%;
     height: 500px;
@@ -142,6 +143,7 @@ export default {
       margin-bottom: 2rem;
     }
     .title {
+      font-size: $text-font-xl;
       margin-top: 4rem;
       letter-spacing: normal;
       font-weight: bolder;
@@ -178,6 +180,7 @@ export default {
       transition: 0.3s;
     }
   }
+  font-size: $text-font-lg;
 }
 
 .h1,
@@ -223,7 +226,7 @@ p {
         text-align: left;
         p {
           font-style: normal;
-          font-size: $text-font-sm;
+          font-size: $text-font-lg;
           letter-spacing: 0.03em;
           line-height: 25px;
           margin-bottom: 2rem;
@@ -260,6 +263,11 @@ p {
       padding-left: 30px;
       padding-right: 30px;
       text-align: left;
+      .content {
+        h3 {
+          font-size: $text-font-lg;
+        }
+      }
     }
   }
 }

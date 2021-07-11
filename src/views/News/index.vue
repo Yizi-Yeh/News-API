@@ -139,7 +139,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 import { useKeypress } from 'vue3-keypress'
 import { emitter } from '@/utils/mitt'
-const apikey = 'e2115558fd8c4a31814264040c8b3166'
+const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default defineComponent({
   name: 'News',
@@ -425,7 +425,7 @@ input {
   font-family: "EB Garamond", serif;
   font-style: normal;
   font-weight: 400;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   line-height: 28px;
 }
 .el-header {
@@ -483,7 +483,7 @@ input {
     margin-bottom: 1rem;
   }
   .title {
-    font-size: $heading-font-sm;
+    font-size:$text-font-xl;
     text-align: left;
     margin-top: 1rem;
     margin-bottom: 2rem;
@@ -492,7 +492,7 @@ input {
   }
   .content {
     text-align: left;
-    font-size: $text-font-md;
+    font-size: $text-font-lg;
   }
   .bottom {
     position: absolute;
