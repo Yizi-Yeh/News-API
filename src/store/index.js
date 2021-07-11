@@ -9,7 +9,7 @@ const Now = `${year}-${month}-${date}`
 const daysAgo = 2
 const fromDaysAgo = `${year}-${month}-${(date - daysAgo)}`
 
-const apikey = '72458e60882e4d5581df3c440a732340'
+const apikey = 'e2115558fd8c4a31814264040c8b3166'
 
 export default createStore({
   state: {
@@ -47,7 +47,6 @@ export default createStore({
   mutations: {
     setcurrIsLoad (state, bool) {
       state.isLoad = bool
-      console.log(typeof (bool))
     },
     setcurrQuery (state, payload) {
       state.query = payload
@@ -64,10 +63,8 @@ export default createStore({
     },
     setPages (state, payload) {
       state.page = payload
-      console.log(payload)
     },
     setcurrNewsId (state, payload) {
-      console.log(payload)
       state.currNewsId = payload
     }
   },

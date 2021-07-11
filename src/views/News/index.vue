@@ -47,7 +47,7 @@
                 style="font-family:'EB Garamond"
                 v-model="date.startTime"
                 type="date"
-                :value-format="yyyy - MM - dd"
+                :value-format="YYYY/MM/DD"
                 :disabled-date="disabledDate"
                 placeholder="Select StartTime"
                 format="YYYY-MM-DD"
@@ -59,9 +59,9 @@
                 v-model="date.endTime"
                 style="font-family:'EB Garamond"
                 type="date"
-                :value-format="yyyy - MM - dd"
+                :value-format="YYYY/MM/DD"
                 :disabled-date="disabledDate"
-                format="YYYY-MM-DD"
+                format="YYYY-MM-DD" + 1
                 placeholder="Select EndTime"
               >
               </el-date-picker>
@@ -137,7 +137,7 @@ import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 import { useKeypress } from 'vue3-keypress'
-const apikey = '72458e60882e4d5581df3c440a732340'
+const apikey = 'e2115558fd8c4a31814264040c8b3166'
 
 export default defineComponent({
   name: 'News',
@@ -162,6 +162,8 @@ export default defineComponent({
     const isMobile = ref(false)
 
     onMounted(() => {
+      console.log(date.value.startTime)
+      console.log(date.value.endTime)
       const screenWidth = document.body.clientWidth
       console.log(screenWidth)
       if (screenWidth < 1000) {
@@ -172,6 +174,8 @@ export default defineComponent({
         isMobile.value = false
       }
       window.onresize = () => {
+        console.log(date.value.startTime)
+        console.log(date.value.endTime)
         return (() => {
           const screenWidth = document.body.clientWidth
           if (screenWidth < 1000) {
@@ -203,15 +207,16 @@ export default defineComponent({
       }
     })
 
-    const date = computed({
-      get () {
-        return store.getters.date
-      },
-      set (value) {
-        store.commit('setcurrDate', value)
-      }
-    })
+    // const date = computed({
+    //   get () {
+    //     return store.getters.date
+    //   },
+    //   set (value) {
+    //     store.commit('setcurrDate', value)
+    //   }
+    // })
 
+    const date = computed(() => store.getters.date)
     const sort = computed({
       get () {
         return store.getters.sort
@@ -243,8 +248,6 @@ export default defineComponent({
       (newValue) => {
         const startTime = convert(date.value.startTime)
         const endTime = convert(date.value.endTime)
-        console.log(startTime)
-        console.log(endTime)
         axios
           .get(
             `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${newValue}&apiKey=${apikey}`

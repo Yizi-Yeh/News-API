@@ -42,7 +42,6 @@ export default {
     const init = () => {
       store.dispatch('fetchNews').then(res => {
         handImgLoad(res)
-        console.log(res)
       })
     }
 
