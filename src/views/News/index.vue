@@ -209,7 +209,6 @@ export default defineComponent({
       },
       set (value) {
         store.commit('setcurrDate', value)
-        console.log(value)
       }
     })
 
@@ -242,9 +241,13 @@ export default defineComponent({
     watch(
       () => sort.value.data.value,
       (newValue) => {
+        const startTime = convert(date.value.startTime)
+        const endTime = convert(date.value.endTime)
+        console.log(startTime)
+        console.log(endTime)
         axios
           .get(
-            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${date.value.startTime}&to=${date.value.endTime}&sortBy=${newValue}&apiKey=${apikey}`
+            `https://newsapi.org/v2/everything?q=${query.value}&pageSize=100&from=${startTime}&to=${endTime}&sortBy=${newValue}&apiKey=${apikey}`
           )
           .then((res) => {
             if (res.data.status) {
@@ -257,6 +260,10 @@ export default defineComponent({
                 title: '篩選成功'
               })
               store.commit('setNews', res.data.articles)
+              store.commit('setcurrDate', {
+                startTime: startTime,
+                endTime: endTime
+              })
             } else {
               console.log(res.data.message)
             }
@@ -305,9 +312,13 @@ export default defineComponent({
                 icon: 'success',
                 title: '篩選成功'
               })
-              store.commit('setNews', res.data.articles)
               console.log(startTime)
               console.log(endTime)
+              store.commit('setNews', res.data.articles)
+              store.commit('setcurrDate', {
+                startTime: startTime,
+                endTime: endTime
+              })
             } else {
               Swal.fire({
                 toast: true,

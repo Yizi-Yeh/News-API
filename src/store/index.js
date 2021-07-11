@@ -53,6 +53,7 @@ export default createStore({
       state.query = payload
     },
     setcurrDate (state, payload) {
+      console.log(payload)
       state.date = payload
     },
     setcurrSort (state, payload) {
