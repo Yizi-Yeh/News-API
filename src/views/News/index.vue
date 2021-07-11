@@ -14,9 +14,13 @@
     </el-row>
 
     <el-main>
-      <el-row class="search-wrapper" :gutter="5">
+      <el-row
+        class="search-wrapper"
+        :gutter="5"
+        :class="[isMobile ? 'isMobile' : '']"
+      >
         <el-col :lg="6" :md="8" :sm="12" :xs="24" justify="center">
-          <div class="block">
+          <div class="search-block" :class="[isMobile ? 'isMobile' : '']">
             <el-input
               style="font-family:'EB Garamond"
               icon="search"
@@ -37,8 +41,8 @@
         </el-col>
 
         <el-col :lg="9" :md="12" :sm="24" :xs="24">
-          <div class="block">
-            <el-col :lg="11" >
+          <div class="date-block" :class="[isMobile ? 'isMobile' : '']">
+            <el-col :lg="11" :xs="24">
               <el-date-picker
                 style="font-family:'EB Garamond"
                 v-model="date.startTime"
@@ -50,7 +54,7 @@
               >
               </el-date-picker>
             </el-col>
-            <el-col :lg="12" >
+            <el-col :lg="12" :xs="20">
               <el-date-picker
                 v-model="date.endTime"
                 style="font-family:'EB Garamond"
@@ -62,7 +66,7 @@
               >
               </el-date-picker>
             </el-col>
-            <el-col :lg="2" :md="12" :sm="12" :xs="24">
+            <el-col :lg="2" :xs="4">
               <el-button
                 type="info"
                 size="medium"
@@ -70,25 +74,27 @@
                 @click="selectDate()"
                 >Search</el-button
               >
-               </el-col>
+            </el-col>
           </div>
         </el-col>
 
         <el-col :lg="4" :md="6" :sm="6" :xs="24">
-          <el-select
-            style="font-family:'EB Garamond"
-            v-model="sort.data.value"
-            placeholder="Sort News"
-          >
-            <el-option
+          <div class="select" :class="[isMobile ? 'isMobile' : '']">
+            <el-select
               style="font-family:'EB Garamond"
-              v-for="item in sort.data"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-model="sort.data.value"
+              placeholder="Sort News"
             >
-            </el-option>
-          </el-select>
+              <el-option
+                style="font-family:'EB Garamond"
+                v-for="item in sort.data"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </div>
         </el-col>
       </el-row>
 
@@ -125,7 +131,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, watch } from 'vue'
+import { defineComponent, computed, watch, ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
@@ -151,6 +157,32 @@ export default defineComponent({
           success: someSuccessCallback
         }
       ]
+    })
+
+    const isMobile = ref(false)
+
+    onMounted(() => {
+      const screenWidth = document.body.clientWidth
+      console.log(screenWidth)
+      if (screenWidth < 1000) {
+        isMobile.value = true
+      } else if (screenWidth >= 1000 && screenWidth < 1200) {
+        isMobile.value = false
+      } else {
+        isMobile.value = false
+      }
+      window.onresize = () => {
+        return (() => {
+          const screenWidth = document.body.clientWidth
+          if (screenWidth < 1000) {
+            isMobile.value = true
+          } else if (screenWidth >= 1000 && screenWidth < 1200) {
+            isMobile.value = false
+          } else {
+            isMobile.value = false
+          }
+        })()
+      }
     })
 
     const isLoad = computed({
@@ -349,7 +381,8 @@ export default defineComponent({
       page,
       setPage,
       pagedNewsData,
-      currNewsId
+      currNewsId,
+      isMobile
     }
   }
 })
@@ -468,7 +501,28 @@ input {
   justify-content: space-around;
   align-items: center;
   margin: 1% 1%;
-  .block {
+  &.isMobile {
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 1rem;
+  }
+  .search-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .el-button {
+      margin-left: 3%;
+      padding: 10px;
+    }
+    margin: 10px;
+    &.isMobile {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 1rem;
+      width: 300px;
+    }
+  }
+  .date-block {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -477,6 +531,22 @@ input {
     .el-button {
       margin: 3%;
       padding: 10px;
+    }
+    &.isMobile {
+      height: -5px;
+      flex-direction: column;
+      align-items: start;
+      .el-col {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .select {
+    &.isMobile {
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+      margin-bottom: 1rem;
     }
   }
 }
