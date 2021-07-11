@@ -36,7 +36,7 @@
         <div class="right">
           <el-row>
             <el-col>
-              <img  :src="currNews.urlToImage" class="main-img" />
+              <img :src="currNews.urlToImage" class="main-img" />
             </el-col>
           </el-row>
         </div>
@@ -48,8 +48,9 @@
             <el-col class="main-content">
               <h3>{{ currNews.content }}</h3>
               <br />
-              <h3 class="readDetail" @click="readDetail(currNews.url)">Readmore</h3>
-              <hr>
+              <h3 class="readDetail" @click="readDetail(currNews.url)">
+                Readmore
+              </h3>
             </el-col>
           </el-row>
         </div>
@@ -58,15 +59,22 @@
   </el-container>
 </template>
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { emitter } from '@/utils/mitt'
 
 export default {
   name: 'NewsId',
   setup () {
     const router = useRouter()
     const store = useStore()
+    const isMobile = ref(false)
+
+    emitter.on('isMobile', (item) => {
+      isMobile.value = item
+      console.log('isMobile', item)
+    })
 
     const isLoad = computed({
       get () {
@@ -106,6 +114,7 @@ export default {
   margin: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  font-size: 16px;
 }
 .el-container {
   padding-left: 100px;
@@ -157,24 +166,20 @@ export default {
       margin-bottom: 60px;
       width: 100%;
       max-width: 830px;
-
     }
   }
 }
-.bottom{
-  .readDetail{
-      &:hover {
-        cursor: pointer;
-        filter: opacity(50%);
-        transition: 0.3s;
-      }
+
+.bottom {
+  .readDetail {
+    &:hover {
+      cursor: pointer;
+      filter: opacity(50%);
+      transition: 0.3s;
+    }
   }
 }
-hr {
-    max-width: 80px;
-    border: solid 1px;
-    margin: 2px auto;
-  }
+
 .h1,
 .h2,
 .h3,

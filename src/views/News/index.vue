@@ -137,6 +137,7 @@ import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 import { useKeypress } from 'vue3-keypress'
+import { emitter } from '@/utils/mitt'
 const apikey = 'e2115558fd8c4a31814264040c8b3166'
 
 export default defineComponent({
@@ -173,9 +174,9 @@ export default defineComponent({
       } else {
         isMobile.value = false
       }
+      emitter.emit('isMobile', isMobile.value)
       window.onresize = () => {
-        console.log(date.value.startTime)
-        console.log(date.value.endTime)
+        console.log(isMobile.value)
         return (() => {
           const screenWidth = document.body.clientWidth
           if (screenWidth < 1000) {
@@ -185,6 +186,7 @@ export default defineComponent({
           } else {
             isMobile.value = false
           }
+          emitter.emit('isMobile', isMobile.value)
         })()
       }
     })
@@ -446,7 +448,7 @@ input {
   border: transparent;
   width: auto;
   &:hover {
-    transition-duration: 0.5s;
+    @include trans(0.5s)
   }
 }
 .el-card__body {
@@ -504,16 +506,13 @@ input {
     background-size: cover;
     &:hover {
       filter: opacity(40%);
-      transition: 0.3s ease;
+      @include trans(0.3s)
     }
   }
 }
 
 .search-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+  @include flex(row,space-around,center);
   margin: 1% 1%;
   &.isMobile {
     flex-direction: column;
@@ -537,10 +536,7 @@ input {
     }
   }
   .date-block {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    @include flex(row,center,center);
     margin: 10px;
     .el-button {
       margin: 3%;
