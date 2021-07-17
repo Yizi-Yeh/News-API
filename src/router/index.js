@@ -14,7 +14,7 @@ const routes = [
     name: 'NewsId',
     component: NewsId
   },
-  { path: '/:pathMatch(.*)', component: NotFoundComponent }
+  { path: '/:id/:pathMatch(.*)', component: NotFoundComponent }
 ]
 
 const router = createRouter({

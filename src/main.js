@@ -21,15 +21,5 @@ app.directive('focus', {
   .use(ElementPlus)
   .use(VueSweetalert2)
   .use(VueAxios, axios)
-  .use(VueLazyLoad, {
-    loading: () => {
-      console.log('loading')
-    },
-    error: () => {
-      console.log('error')
-    },
-    loaded: () => {
-      console.log('loaded')
-    }
-  })
+  .use(VueLazyLoad)
   .mount('#app')

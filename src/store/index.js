@@ -84,6 +84,7 @@ export default createStore({
     },
     handLoadState ({ commit }, bool) {
       commit('setcurrIsLoad', bool)
+      console.log(bool)
     }
   },
   getters: {

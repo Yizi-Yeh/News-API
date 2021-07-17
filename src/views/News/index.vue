@@ -47,7 +47,7 @@
                 style="font-family:'EB Garamond"
                 v-model="date.startTime"
                 type="date"
-                :value-format="YYYY/MM/DD"
+                :value-format="YYYY / MM / DD"
                 :disabled-date="disabledDate"
                 placeholder="Select StartTime"
                 format="YYYY-MM-DD"
@@ -59,9 +59,11 @@
                 v-model="date.endTime"
                 style="font-family:'EB Garamond"
                 type="date"
-                :value-format="YYYY/MM/DD"
+                :value-format="YYYY / MM / DD"
                 :disabled-date="disabledDate"
-                format="YYYY-MM-DD" + 1
+                format="YYYY-MM-DD"
+                +
+                1
                 placeholder="Select EndTime"
               >
               </el-date-picker>
@@ -110,8 +112,10 @@
             <div class="top">
               <h3>{{ item.publishedAt.substring(0, 10) }}</h3>
             </div>
-             <img v-lazy="item.urlToImage" class="card-img" />
-            <!-- <img :src="item.urlToImage" class="card-img" /> -->
+            <img
+            v-lazy="{src: item.urlToImage, error: 'https://bulma.io/images/placeholders/1280x960.png'}"
+              class="card-img"
+            />
             <div style="padding: 10px">
               <div class="title">
                 <h3>{{ item.title.substring(0, 60) }} ...</h3>
@@ -426,7 +430,6 @@ input {
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0.02em;
-  line-height: 28px;
 }
 .el-header {
   h1 {
@@ -449,7 +452,7 @@ input {
   border: transparent;
   width: auto;
   &:hover {
-    @include trans(0.5s)
+    @include trans(0.5s);
   }
 }
 .el-card__body {
@@ -483,7 +486,7 @@ input {
     margin-bottom: 1rem;
   }
   .title {
-    font-size:$text-font-xl;
+    font-size: $text-font-xl;
     text-align: left;
     margin-top: 1rem;
     margin-bottom: 2rem;
@@ -507,20 +510,20 @@ input {
     background-size: cover;
     &:hover {
       filter: opacity(40%);
-      @include trans(0.3s)
+      @include trans(0.3s);
     }
   }
 }
 
 .search-wrapper {
-  @include flex(row,space-around,center);
+  @include flex(row, space-around, center);
   margin: 1% 1%;
   &.isMobile {
     flex-direction: column;
     align-items: start;
     margin-bottom: 1rem;
   }
-  .search-block{
+  .search-block {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -537,7 +540,7 @@ input {
     }
   }
   .date-block {
-    @include flex(row,center,center);
+    @include flex(row, center, center);
     margin: 10px;
     .el-button {
       margin: 3%;

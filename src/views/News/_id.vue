@@ -36,7 +36,7 @@
         <div class="right">
           <el-row>
             <el-col>
-              <img :src="currNews.urlToImage" class="main-img" />
+              <img :src="currNews.urlToImage? currNews.urlToImage :'https://bulma.io/images/placeholders/1280x960.png'" class="main-img" />
             </el-col>
           </el-row>
         </div>
@@ -93,7 +93,6 @@ export default {
 
     const readDetail = (idx) => {
       const id = idx
-      console.log(id)
       window.open(id)
     }
 
