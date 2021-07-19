@@ -143,6 +143,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useStore } from 'vuex'
 import { useKeypress } from 'vue3-keypress'
 import { emitter } from '@/utils/mitt'
+import { apiGetNewsRequest } from '@/api/index'
 const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default defineComponent({

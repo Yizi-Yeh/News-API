@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
-import axios from 'axios'
+// import axios from 'axios'
+import { apiGetNewsRequest } from '../api/index'
 
 const currentDate = new Date()
 const year = currentDate.getFullYear()
@@ -9,7 +10,7 @@ const Now = `${year}-${month}-${date}`
 const daysAgo = 2
 const fromDaysAgo = `${year}-${month}-${(date - daysAgo)}`
 
-const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
+// const apikey = '68a7a15d851d4a768b93e97ddaca25bd'
 
 export default createStore({
   state: {
@@ -52,7 +53,6 @@ export default createStore({
       state.query = payload
     },
     setcurrDate (state, payload) {
-      console.log(payload)
       state.date = payload
     },
     setcurrSort (state, payload) {
@@ -71,20 +71,24 @@ export default createStore({
   actions: {
     // 取得新聞資料
     fetchNews ({ commit }) {
-      return axios
-        .get(
-          `https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=${fromDaysAgo}&to=${Now}&sortBy=publishedAt&apiKey=${apikey}`
-        )
-        .then((res) => {
-          commit('setNews', res.data.articles)
-          return res.data.articles
-        }).catch((error) => {
-          console.log(error.data.message)
-        })
+      const res = apiGetNewsRequest()
+      return res.then(response => {
+        commit('setNews', response.data.articles)
+        return response.data.articles
+      })
+      // return axios
+      //   .get(
+      //     `https://newsapi.org/v2/everything?q=COVID-19&pageSize=100&from=${fromDaysAgo}&to=${Now}&sortBy=publishedAt&apiKey=${apikey}`
+      //   )
+      //   .then((res) => {
+      //     commit('setNews', res.data.articles)
+      //     return res.data.articles
+      //   }).catch((error) => {
+      //     console.log(error)
+      //   })
     },
     handLoadState ({ commit }, bool) {
       commit('setcurrIsLoad', bool)
-      console.log(bool)
     }
   },
   getters: {
